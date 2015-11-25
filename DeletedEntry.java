@@ -15,5 +15,6 @@ public class DeletedEntry extends HashEntry{
 	
 	//hey dex
 	//How are you?
+	//lenmor says
 
 }
