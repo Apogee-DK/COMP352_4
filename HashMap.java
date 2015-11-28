@@ -8,7 +8,7 @@ public class HashMap {
 	private String factorOrNumber;
 	private int incNumber;
 	private double incFactor;
-	private char collisionType;
+	private char collisionHandlingType;
 
 
 	public HashMap(){
@@ -17,7 +17,7 @@ public class HashMap {
 		for (int i=0; i < capacity; i++)
 			hashTable[i] = null;
 	}
-	
+
 	public HashMap(int cap){
 		capacity = cap;
 		hashTable = new HashEntry[cap];
@@ -28,50 +28,75 @@ public class HashMap {
 
 	//GETTING THE VALUE FROM A SPECIFIC KEY	
 	public String get(String k) {
-		int hashVal = hashMe(k, capacity);
+		int hashVal = hashMe(k);
+
+		int quadCtr=0;
 
 		while(hashTable[hashVal] != null && !hashTable[hashVal].getKey().equals(k)){
-			hashVal = (hashVal + hashSec(k))%capacity; //PUT THE DOUBLE HASH FUNCTION HERE
-		}
 
+			if (collisionHandlingType == 'D')
+				hashVal = (hashVal + hashSec(k))%capacity; 
+			else if (collisionHandlingType == 'Q'){
+				hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity; 
+				quadCtr++;
+			}
+		}
 		return hashTable[hashVal].getValue();
 	}
 
-	
-	
+
+
 	//ADDING VALUES INTO THE TABLE
 	public void put(String k, String v) {
-
+		//**********************************************************************
 		//MUST ADD EXTEND ARRAY METHOD HERE
 		if(loadFactor < size()/capacity){
+			counter = 0;
 			if(factorOrNumber.equals("factor")){
 				capacity *= incFactor;
 			}
-			
-			else if(factorOrNumber.equals("number")){
-				capacity += incNumber;
-			}
-			
-			
-			
-			
-			
-		}
-		
-		
-		
-		
-		int hashVal = hashMe(k, capacity); 
 
-		while(!isEmptyCell(hashVal, k)){
-			hashVal = (hashVal + hashSec(k))%capacity; // DOUBLE HASH FUNCTION HERE
+			else if(factorOrNumber.equals("number")){
+				capacity += incNumber;				
+			}
+			HashEntry [] tempTable = new HashEntry[capacity];
+
+			for(HashEntry h : hashTable){
+				int quadCtr = 0;
+				int hashVal = hashMe(k); 				
+				while(!isEmptyCell(hashVal, k)){					
+					if (collisionHandlingType == 'D')
+						hashVal = (hashVal + hashSec(k)) % capacity; 
+					else if (collisionHandlingType == 'Q'){
+						hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;
+						quadCtr++;
+					}
+				}
+
+				tempTable[hashVal] = new HashEntry(k, v);
+				counter++;
+			}
+			hashTable = tempTable;
+		}
+		//*************************************************************************
+
+		int quadCtr=0;
+		int hashVal = hashMe(k); 
+
+		while(!isEmptyCell(hashVal, k)){			
+			if (collisionHandlingType == 'D')
+				hashVal = (hashVal + hashSec(k)) % capacity; 
+			else if (collisionHandlingType == 'Q'){
+				hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;
+				quadCtr++;
+			}
 		}
 
 		hashTable[hashVal] = new HashEntry(k, v);
 		counter++;
-
 	}
-
+	
+	
 	//REMOVE A CERTAIN STRING BY USING THE KEY
 	public void remove(String k){
 		System.out.println("Trying to remove " + k + ". Searching for it in the Hash Table...");
@@ -79,7 +104,7 @@ public class HashMap {
 			System.out.println(k + "was not found in the Table.");
 		}
 		else{
-			int hashVal = hashMe(k, capacity);
+			int hashVal = hashMe(k);
 			hashTable[hashVal] = new DeletedEntry(k); //LEAVING A TRACE, SO WE KNOW THERE WAS AN ELEMENT THERE		
 			counter--;
 		}
@@ -108,7 +133,7 @@ public class HashMap {
 
 
 	//HASHING FUNCTION - I ADDED THIS TO THE HASHMAP CLASS
-	public int hashMe(String k, int cap) {
+	public int hashMe(String k) {
 		//k is the key, N is the capacity of array/ hash hashTable
 		//############# HASH CODE MAP ##############
 		// converts strings to integers
@@ -129,10 +154,10 @@ public class HashMap {
 		//######## COMPRESSION MAP
 		// integers to array index
 		// we use MAD 
-		int a = cap-1;	// a mod N != 0
+		int a = capacity-1;	// a mod N != 0
 		int b = 2;		// b can be any nonnegative int
 
-		int finalKey = ((a * total) + b ) % cap;
+		int finalKey = ((a * total) + b ) % capacity;
 
 		return finalKey;
 
@@ -157,7 +182,7 @@ public class HashMap {
 		return (q - (total % q) );
 
 	}
-	
+
 	//CHECKS IF THE CELL IS EMPTY
 	public boolean isEmptyCell(int hashVal, String k){
 		if(hashTable[hashVal] == null || hashTable[hashVal].equals("- " + k)) //WHEN I REMOVE A VALUE FROM THE TABLE, I INPUT -1 TO LEAVE A TRACE
@@ -193,9 +218,9 @@ public class HashMap {
 		}
 		collisionType = type;
 	}
-	
-	
-	
+
+
+
 
 
 	//****************************************************************************************************************************************  
@@ -221,7 +246,7 @@ public class HashMap {
 		}
 		return true;
 	}
-	
+
 
 
 
