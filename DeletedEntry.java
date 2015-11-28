@@ -1,11 +1,11 @@
 //This will allow us to know if the hash cell had an entry or not
 public class DeletedEntry extends HashEntry{
-	//private static DeletedEntry delEntry = null;
+	private static DeletedEntry delEntry = null;
 	
 		
 	//For entries that are removed!
-	public DeletedEntry(){
-		super("-1", "-1");
+	public DeletedEntry(String k){
+		super("- " + k, "-1 " + k);
 	}
 	
 	
