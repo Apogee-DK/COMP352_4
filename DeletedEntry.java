@@ -2,23 +2,22 @@
 public class DeletedEntry extends HashEntry{
 	private static DeletedEntry delEntry = null;
 	
-	private DeletedEntry(){
-		super("Held", "Held");
+		
+	//For entries that are removed!
+	public DeletedEntry(){
+		super("-1", "-1");
 	}
 	
+	
+	
+	
+	/*
 	public static DeletedEntry getDeletedEntry(){
 		if(delEntry == null)
 			delEntry = new DeletedEntry();
 		
 		return delEntry;
 	}
-	
-	//hey dex
-	//How are you?
-	//Another test
-	
-	
-	//lenmor test 2
-	//ANOTHER TEST
+	*/
 
 }
