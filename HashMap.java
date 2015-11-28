@@ -7,11 +7,12 @@ public class HashMap {
 	private double loadFactor = 0.5; 	
 	private String factorOrNumber = "";
 	private int incNumber = 1;
-	private double incFactor = 1;
-	private char collisionHandlingType;
-	private int maxCollision = 0;
-	private int collisionCounter = 0; //for question E
-	private float avgCollision = 0;
+	private double incFactor = 1.2;
+	private char collisionHandlingType = ' ';
+	private char emptyMarkerScheme = ' ';
+	private int maxCollisionCtr = 0; //maximum number of collisions for one cell
+	private int numOfCollisionCtr = 0; //number of collisions in the whole table
+	private int numOfEltWithCollisionCtr = 0; //number of elements with collisions
 
 
 	public HashMap(){
@@ -83,15 +84,17 @@ public class HashMap {
 
 		int quadCtr=0;
 		int hashVal = hashMe(k); 
-
+		boolean hadCollision = false;
+		
+		
 		while(!isEmptyCell(hashVal, k)){	
 			
 			//*************************************************************************
 			//SETTING UP ALL THE COLLISION NUMBERS 
-			collisionCounter++; //keep count of all collisions
+			numOfCollisionCtr++; //keep count of all collisions
 			hashTable[hashVal].incNumOfCollision(); //add 1 collision to the element
-			if(maxCollision < hashTable[hashVal].getNumOfCollision()){
-				maxCollision = hashTable[hashVal].getNumOfCollision();
+			if(maxCollisionCtr < hashTable[hashVal].getNumOfCollision()){
+				maxCollisionCtr = hashTable[hashVal].getNumOfCollision();
 			}
 			
 			
@@ -103,6 +106,12 @@ public class HashMap {
 				hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;
 				quadCtr++;
 			}
+			
+			hadCollision = true; //had a collision			
+		}
+		
+		if(hadCollision){
+			numOfEltWithCollisionCtr++;
 		}
 
 		hashTable[hashVal] = new HashEntry(k, v);
@@ -244,26 +253,32 @@ public class HashMap {
 	}
 	
 	
-	
-	public void printHastableStatistic(){
-		System.out.println("- Hash Statistic - \nLoad Factor: " + loadFactor + "\nRehash Factor: " +  );
-		
-		
+	public double getAverageNumCollision(){
+		return numOfCollisionCtr/numOfEltWithCollisionCtr;		
 	}
 	
 	
+	public void printHastableStatistic(){
+		System.out.println("- Hash Statistic - \nLoad factor: " + loadFactor + "\nRehash factor: " + factorOrNumber +"\nCollision handling type: " + collisionHandlingType 
+				+ "\nEmpty marker scheme: " + emptyMarkerScheme + "\nSize of table: " + hashTable.length + "\nNumber of elements: " + numOfElements 
+				+ "\nNumber of collisions: " + numOfCollisionCtr + "\nMaximum number of collisions (single cell): " + maxCollisionCtr 
+				+ "\nAverage Number of Collision: " + getAverageNumCollision());	
+	}
+	
+	public void resetHashtableStatistics(){
+		numOfElements = 0;
+		loadFactor = 0.5; 	
+		factorOrNumber = "";
+		incNumber = 1;
+		incFactor = 1.2;
+		collisionHandlingType = ' ';
+		emptyMarkerScheme = ' ';
+		maxCollisionCtr = 0;
+		numOfCollisionCtr = 0; 
+		numOfEltWithCollisionCtr = 0;		
+	}
 	
 	
-	
-	
-	
-	
-	
-
-
-
-
-
 	//****************************************************************************************************************************************  
 	// AUXILIARY METHODS
 	//****************************************************************************************************************************************
