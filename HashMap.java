@@ -22,20 +22,22 @@ public class HashMap {
 	public String get(String k) {
 		int hashVal = hashMe(k, capacity);
 
-		while(hashTable[hashVal] != null && !hashTable[hashVal].equals(k)){
-			hashVal += hashSec(k)%capacity; //PUT THE DOUBLE HASH FUNCTION HERE
+		while(hashTable[hashVal] != null && !hashTable[hashVal].getKey().equals(k)){
+			hashVal = (hashVal + hashSec(k))%capacity; //PUT THE DOUBLE HASH FUNCTION HERE
 		}
 
 		return hashTable[hashVal].getValue();
 	}
 
+	
+	
 	//ADDING VALUES INTO THE TABLE
 	public void put(String k, String v) {
 
 		int hashVal = hashMe(k, capacity); 
 
 		while(!isEmptyCell(hashVal, k)){
-			hashVal = hashSec(k)%capacity; // DOUBLE HASH FUNCTION HERE
+			hashVal = (hashVal + hashSec(k))%capacity; // DOUBLE HASH FUNCTION HERE
 		}
 
 		hashTable[hashVal] = new HashEntry(k, v);
@@ -183,6 +185,8 @@ public class HashMap {
 		}
 		return true;
 	}
+	
+
 
 
 
