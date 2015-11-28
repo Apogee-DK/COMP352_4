@@ -2,14 +2,15 @@
 public class HashMap {
 
 	private int capacity;
-	private HashEntry[] table;
+	private HashEntry[] hashTable;
+	private int counter = 0;
 		
 	
 	public HashMap(int cap){
 		capacity = cap;
-		table = new HashEntry[cap];
+		hashTable = new HashEntry[cap];
 		for (int i=0; i < cap; i++)
-			table[i] = null;
+			hashTable[i] = null;
 	}
 	
 	
@@ -18,25 +19,20 @@ public class HashMap {
 	//GETTING THE VALUE FROM A SPECIFIC KEY	
 	public String get(String k) {
 		int hashVal = hashMe(k, capacity);
-        if (table[hashVal] == null){
+        if (hashTable[hashVal] == null){
               return null;
         }
         else
-              return table[hashVal].getValue();
+              return hashTable[hashVal].getValue();
 	}
-	
-	
-	
 	
 	//ADDING VALUES INTO THE TABLE
 	public void put(String k, String v) {
 		int hashVal = hashMe(k, capacity);
-        table[hashVal] = new HashEntry(k, v);
+        hashTable[hashVal] = new HashEntry(k, v);
+        counter++;
 	
 	}
-	
-	
-	
 	
 	//REMOVE A CERTAIN STRING BY USING THE KEY
 	public void remove(String k){
@@ -46,22 +42,29 @@ public class HashMap {
 		}
 		else{
 			int hashVal = hashMe(k, capacity);
-			table[hashVal] = new DeletedEntry(); //LEAVING A TRACE, SO WE KNOW THERE WAS AN ELEMENT THERE		
+			hashTable[hashVal] = new DeletedEntry(k); //LEAVING A TRACE, SO WE KNOW THERE WAS AN ELEMENT THERE		
+			counter--;
 		}
 			
 		
 	}
 	
+	//RETURN AN ITERABLE COLLECTION OF HASH ENTRIES FROM THE TABLE
+	public HashEntry[] values(){
+		return hashTable;
+	}
+		
+	
 	//DETERMINE THE SIZE OF THE HASH TABLE
 	public int size(){
-		return table.length;		
+		return counter;		
 	}
 	
 	
 	
 	//DETERMINE IF THE TABLE IS EMPTY
 	public boolean isEmpty(){
-		for(HashEntry h: table){
+		for(HashEntry h: hashTable){
 			if(h != null)
 				return false;
 		}
@@ -71,7 +74,7 @@ public class HashMap {
 	
 	//HASHING FUNCTION - I ADDED THIS TO THE HASHMAP CLASS
 	public int hashMe(String k, int cap) {
-		//k is the key, N is the capacity of array/ hash table
+		//k is the key, N is the capacity of array/ hash hashTable
 		//############# HASH CODE MAP ##############
 		// converts strings to integers
 		
@@ -107,9 +110,8 @@ public class HashMap {
 	
 	//CHECKS IF THE CELL IS EMPTY
 	public boolean isEmptyCell(int hashVal){
-		if(table[hashVal] == null || table[hashVal].equals("-1")) //WHEN I REMOVE A VALUE FROM THE TABLE, I INPUT -1 TO LEAVE A TRACE
+		if(hashTable[hashVal] == null || hashTable[hashVal].equals("-1")) //WHEN I REMOVE A VALUE FROM THE TABLE, I INPUT -1 TO LEAVE A TRACE
 			return true;		
 		return false;
 	}
-	
 }
