@@ -32,7 +32,7 @@ public class HashMap {
 
 		int hashVal = hashMe(k, capacity); 
 
-		while(isEmptyCell(hashVal, k)){
+		while(!isEmptyCell(hashVal, k)){
 			hashVal += hashSec(k); // DOUBLE HASH FUNCTION HERE
 		}
 
