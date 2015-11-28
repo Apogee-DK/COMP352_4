@@ -12,7 +12,6 @@ public class HashMap {
 	private char emptyMarkerScheme = ' ';
 	private int maxCollisionCtr = 0; //maximum number of collisions for one cell
 	private int numOfCollisionCtr = 0; //number of collisions in the whole table
-	private int numOfEltWithCollisionCtr = 0; //number of elements with collisions
 
 
 	public HashMap(){
@@ -52,6 +51,7 @@ public class HashMap {
 
 	//ADDING VALUES INTO THE TABLE
 	public void put(String k, String v) {
+		
 		//**********************************************************************
 		//MUST ADD EXTEND ARRAY METHOD HERE
 		if(loadFactor < size()/capacity){
@@ -63,11 +63,18 @@ public class HashMap {
 			}
 			
 			HashEntry [] tempTable = new HashEntry[capacity];
-
-			for(HashEntry h : hashTable){
+			
+			
+			//RESET THE NUMBER OF COLLISIONS FOR NEW ARRAY
+			maxCollisionCtr = 0;
+			numOfCollisionCtr = 0; 
+			
+			for(HashEntry h : hashTable){ //rehashing everything into the newly created array
 				int quadCtr = 0;
-				int hashVal = hashMe(k); 				
-				while(!isEmptyCell(hashVal, k)){					
+				int hashVal = hashMe(k); 
+				while(!isEmptyCell(hashVal, k)){
+					setCollisionNumber(hashVal); //setting the number of collision for all the elements	again							
+					//CHECK WHICH COLLISION HANDLER WAS CHOSEN
 					if (collisionHandlingType == 'D')
 						hashVal = (hashVal + hashSec(k)) % capacity; 
 					else if (collisionHandlingType == 'Q'){
@@ -75,8 +82,8 @@ public class HashMap {
 						quadCtr++;
 					}
 				}
-
-				tempTable[hashVal] = new HashEntry(k, v);
+				
+				tempTable[hashVal] = h;
 			}
 			hashTable = tempTable; 
 		}
@@ -84,19 +91,13 @@ public class HashMap {
 
 		int quadCtr=0;
 		int hashVal = hashMe(k); 
-		boolean hadCollision = false;
-		
-		
+	
+			
 		while(!isEmptyCell(hashVal, k)){	
 			
 			//*************************************************************************
 			//SETTING UP ALL THE COLLISION NUMBERS 
-			numOfCollisionCtr++; //keep count of all collisions
-			hashTable[hashVal].incNumOfCollision(); //add 1 collision to the element
-			if(maxCollisionCtr < hashTable[hashVal].getNumOfCollision()){
-				maxCollisionCtr = hashTable[hashVal].getNumOfCollision();
-			}
-			
+			setCollisionNumber(hashVal);			
 			
 			//*************************************************************************
 			
@@ -105,13 +106,7 @@ public class HashMap {
 			else if (collisionHandlingType == 'Q'){
 				hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;
 				quadCtr++;
-			}
-			
-			hadCollision = true; //had a collision			
-		}
-		
-		if(hadCollision){
-			numOfEltWithCollisionCtr++;
+			}		
 		}
 
 		hashTable[hashVal] = new HashEntry(k, v);
@@ -253,8 +248,8 @@ public class HashMap {
 	}
 	
 	
-	public double getAverageNumCollision(){
-		return numOfCollisionCtr/numOfEltWithCollisionCtr;		
+	public double getAverageNumCollision(){	
+		return 1;
 	}
 	
 	
@@ -274,8 +269,7 @@ public class HashMap {
 		collisionHandlingType = ' ';
 		emptyMarkerScheme = ' ';
 		maxCollisionCtr = 0;
-		numOfCollisionCtr = 0; 
-		numOfEltWithCollisionCtr = 0;		
+		numOfCollisionCtr = 0; 	
 	}
 	
 	
@@ -303,6 +297,16 @@ public class HashMap {
 		return true;
 	}
 
+	
+	public void setCollisionNumber(int hashVal){
+		numOfCollisionCtr++; //keep count of all collisions
+		hashTable[hashVal].incNumOfCollision(); //add 1 collision to the element
+		if(maxCollisionCtr < hashTable[hashVal].getNumOfCollision()){
+			maxCollisionCtr = hashTable[hashVal].getNumOfCollision();
+		}
+		
+		
+	}
 
 
 
