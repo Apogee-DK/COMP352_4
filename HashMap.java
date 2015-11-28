@@ -6,6 +6,7 @@ public class HashMap {
 		
 	
 	public HashMap(int cap){
+		capacity = cap;
 		table = new HashEntry[cap];
 		for (int i=0; i < cap; i++)
 			table[i] = null;
