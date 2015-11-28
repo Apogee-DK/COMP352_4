@@ -23,7 +23,7 @@ public class HashMap {
 		int hashVal = hashMe(k, capacity);
 
 		while(hashTable[hashVal] != null && !hashTable[hashVal].equals(k)){
-			hashVal = hashSec(k); //PUT THE DOUBLE HASH FUNCTION HERE
+			hashVal += hashSec(k)%capacity; //PUT THE DOUBLE HASH FUNCTION HERE
 		}
 
 		return hashTable[hashVal].getValue();
@@ -35,7 +35,7 @@ public class HashMap {
 		int hashVal = hashMe(k, capacity); 
 
 		while(!isEmptyCell(hashVal, k)){
-			hashVal = hashSec(k); // DOUBLE HASH FUNCTION HERE
+			hashVal = hashSec(k)%capacity; // DOUBLE HASH FUNCTION HERE
 		}
 
 		hashTable[hashVal] = new HashEntry(k, v);
