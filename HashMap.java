@@ -216,7 +216,7 @@ public class HashMap {
 		if(type != 'Q' || type != 'D'){
 			System.out.println("Wrong Collision Handler. Please try again!");
 		}
-		collisionType = type;
+		collisionHandlingType = type;
 	}
 
 
