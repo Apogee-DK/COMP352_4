@@ -5,7 +5,7 @@ public class DeletedEntry extends HashEntry{
 		
 	//For entries that are removed!
 	public DeletedEntry(String k){
-		super("- " + k, "-1 " + k);
+		super("- " + k, "- " + k);
 	}
 	
 	
