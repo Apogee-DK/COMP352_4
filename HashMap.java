@@ -5,7 +5,9 @@ public class HashMap {
 	private HashEntry[] hashTable;
 	private int counter = 0;
 	private float loadFactor; 	
-	private float factorOrNumber;
+	private String factorOrNumber;
+	private int incNumber;
+	private double incFactor;
 
 
 	public HashMap(int cap){
@@ -21,7 +23,7 @@ public class HashMap {
 		int hashVal = hashMe(k, capacity);
 
 		while(hashTable[hashVal] != null && !hashTable[hashVal].equals(k)){
-			hashVal += hashSec(k); //PUT THE DOUBLE HASH FUNCTION HERE
+			hashVal = hashSec(k); //PUT THE DOUBLE HASH FUNCTION HERE
 		}
 
 		return hashTable[hashVal].getValue();
@@ -33,7 +35,7 @@ public class HashMap {
 		int hashVal = hashMe(k, capacity); 
 
 		while(!isEmptyCell(hashVal, k)){
-			hashVal += hashSec(k); // DOUBLE HASH FUNCTION HERE
+			hashVal = hashSec(k); // DOUBLE HASH FUNCTION HERE
 		}
 
 		hashTable[hashVal] = new HashEntry(k, v);
@@ -60,7 +62,6 @@ public class HashMap {
 	public HashEntry[] values(){
 		return hashTable;
 	}
-
 
 	//DETERMINE THE SIZE OF THE HASH TABLE
 	public int size(){
@@ -127,11 +128,62 @@ public class HashMap {
 		return (q - (total % q) );
 
 	}
-
+	
 	//CHECKS IF THE CELL IS EMPTY
 	public boolean isEmptyCell(int hashVal, String k){
 		if(hashTable[hashVal] == null || hashTable[hashVal].equals("- " + k)) //WHEN I REMOVE A VALUE FROM THE TABLE, I INPUT -1 TO LEAVE A TRACE
 			return true;		
 		return false;
 	}
+
+	//****************************************************************************************************************************************  
+	// ADDITIONAL METHODS
+	//****************************************************************************************************************************************
+
+
+	public void setRehashThreshold(float lf){
+		loadFactor = lf;
+	}
+
+	public void setRehashFactor(String fN){
+		if(isInteger(fN)){
+			factorOrNumber = "Number";
+			incNumber = Integer.parseInt(fN);
+		}
+		else if(isReal(fN)){
+			factorOrNumber = "Factor";
+			incFactor = Double.parseDouble(fN);
+		}
+		else
+			System.out.println("Not a valid number. Please try again!");
+	}
+
+
+
+	//****************************************************************************************************************************************  
+	// AUXILIARY METHODS
+	//****************************************************************************************************************************************
+
+	public boolean isInteger(String fN){
+		try{
+			Integer.parseInt(fN);
+		}
+		catch(Exception e){
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isReal(String fN){
+		try{
+			Double.parseDouble(fN);
+		}
+		catch(Exception e){
+			return false;
+		}
+		return true;
+	}
+
+
+
 }
