@@ -3,6 +3,7 @@ public class HashEntry {
 	
 	private String key;
 	private String value;
+	private int collisionNumber;
 	
 	HashEntry(String k, String v) {
 		
@@ -29,5 +30,16 @@ public class HashEntry {
 	public String getValue() {
 		return value;
 	}
+	
+	public void incNumOfCollision(){
+		collisionNumber++;
+	}
+	
+	public int getNumOfCollision(){
+		return collisionNumber;
+	}
 
+	public String toString(){
+		return getValue();
+	}
 }
