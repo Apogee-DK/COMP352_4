@@ -85,7 +85,7 @@ public class HashMap {
 		// converts strings to integers
 
 		int len = k.length();
-		int z = 33;		//good prime number to avoid collisions
+		int z = 31;		//good prime number to avoid collisions
 		int total = 0;
 
 		for (int i=0; i < len; i++) {
@@ -112,7 +112,7 @@ public class HashMap {
 	public int hashSec(String k) {
 
 		int len = k.length();
-		int z = 33;		//good prime number to avoid collisions
+		int z = 31;		//good prime number to avoid collisions
 		int total = 0;
 
 		for (int i=0; i < len; i++) {
