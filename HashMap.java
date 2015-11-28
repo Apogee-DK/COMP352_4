@@ -4,12 +4,20 @@ public class HashMap {
 	private int capacity;
 	private HashEntry[] hashTable;
 	private int counter = 0;
-	private float loadFactor; 	
+	private double loadFactor = 0.75; 	
 	private String factorOrNumber;
 	private int incNumber;
 	private double incFactor;
+	private char collisionType;
 
 
+	public HashMap(){
+		capacity = 100;
+		hashTable = new HashEntry[capacity];
+		for (int i=0; i < capacity; i++)
+			hashTable[i] = null;
+	}
+	
 	public HashMap(int cap){
 		capacity = cap;
 		hashTable = new HashEntry[cap];
@@ -34,6 +42,25 @@ public class HashMap {
 	//ADDING VALUES INTO THE TABLE
 	public void put(String k, String v) {
 
+		//MUST ADD EXTEND ARRAY METHOD HERE
+		if(loadFactor < size()/capacity){
+			if(factorOrNumber.equals("factor")){
+				capacity *= incFactor;
+			}
+			
+			else if(factorOrNumber.equals("number")){
+				capacity += incNumber;
+			}
+			
+			
+			
+			
+			
+		}
+		
+		
+		
+		
 		int hashVal = hashMe(k, capacity); 
 
 		while(!isEmptyCell(hashVal, k)){
@@ -143,23 +170,32 @@ public class HashMap {
 	//****************************************************************************************************************************************
 
 
-	public void setRehashThreshold(float lf){
+	public void setRehashThreshold(double lf){
 		loadFactor = lf;
 	}
 
 	public void setRehashFactor(String fN){
 		if(isInteger(fN)){
-			factorOrNumber = "Number";
+			factorOrNumber = "number";
 			incNumber = Integer.parseInt(fN);
 		}
 		else if(isReal(fN)){
-			factorOrNumber = "Factor";
+			factorOrNumber = "factor";
 			incFactor = Double.parseDouble(fN);
 		}
 		else
 			System.out.println("Not a valid number. Please try again!");
 	}
 
+	public void setCollisionHandling(char type){
+		if(type != 'Q' || type != 'D'){
+			System.out.println("Wrong Collision Handler. Please try again!");
+		}
+		collisionType = type;
+	}
+	
+	
+	
 
 
 	//****************************************************************************************************************************************  
