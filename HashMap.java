@@ -83,8 +83,8 @@ public class HashMap {
 					if (collisionHandlingType == 'D')
 						hashVal = (hashVal + hashSec(k)) % capacity; 
 					else if (collisionHandlingType == 'Q'){
-						hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;
 						quadCtr++;
+						hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;						
 					}
 				}
 
@@ -109,8 +109,8 @@ public class HashMap {
 			if (collisionHandlingType == 'D')
 				hashVal = (hashVal + hashSec(k)) % capacity; 
 			else if (collisionHandlingType == 'Q'){
-				hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;
 				quadCtr++;
+				hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;				
 			}		
 		}
 
