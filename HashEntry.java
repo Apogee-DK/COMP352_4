@@ -1,5 +1,5 @@
 
-public class HashEntry {
+public class HashEntry extends Available{
 	
 	private String key;
 	private String value;
@@ -11,6 +11,8 @@ public class HashEntry {
 		value = v;
 
 	}
+
+	HashEntry(Available av){}
 	
 	public String getKey() {
 		
