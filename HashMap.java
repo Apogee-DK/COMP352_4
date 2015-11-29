@@ -35,13 +35,18 @@ public class HashMap {
 
 		int quadCtr=0;
 
+		if(hashTable[hashVal] == null){
+			System.out.println("Not part of Hash table!");
+			return null;
+		}
+		
 		while(hashTable[hashVal] != null && !hashTable[hashVal].getKey().equals(k)){
 
 			if(hashTable[hashVal].getKey().equals("- " + k)){
-				System.out.println("Word removed. Not in table anymore!");
+				System.out.println("Word removed. Not in Hash table anymore!");
 				return null;
 			}
-
+			
 			if (collisionHandlingType == 'D')
 				hashVal = (hashVal + hashSec(k))%capacity; 
 			else if (collisionHandlingType == 'Q'){
