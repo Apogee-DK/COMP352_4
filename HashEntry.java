@@ -12,8 +12,9 @@ public class HashEntry extends Available{
 
 	}
 
-	HashEntry(Available av){
-		key = "AVAILABLE";
+	HashEntry(Available av, String k){
+		key = "_AVAILABLE_";
+		value = k;
 	}
 	
 	public String getKey() {
