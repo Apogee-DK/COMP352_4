@@ -370,7 +370,23 @@ public class HashMap {
 
 
 	}
-
+	
+	public boolean isPrime(int n){
+		for(int i = 2; i < Math.sqrt(n); i++){
+			if(n%i == 0)
+				return false;		
+		}		
+		return true;		
+	}
+	
+	public int findNextPrime(int n){
+		for(int i = n + 1; i < 2*n; i++){
+			if(isPrime(i)){
+				return i;
+			}
+		}
+		return -1; //this shouldn't happen
+	}
 
 
 
