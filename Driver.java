@@ -68,7 +68,7 @@ public class Driver {
 		//1st case , N, Q, resize = 1.3, loadFactor = 0.75
 		deliverableC('N','Q',"1.3",0.75, "hash_test_file1.txt" );
 		
-		// 1st text file
+		// 2nd text file
 		//1st case , N, D, resize = 1.2, loadFactor = 0.5
 		deliverableC('N','D',"1.2",0.5, "hash_test_file2.txt" );
 
