@@ -12,6 +12,7 @@ public class HashMap {
 	private char emptyMarkerScheme = ' ';
 	private int maxCollisionCtr = 0; //maximum number of collisions for one cell
 	private int numOfCollisionCtr = 0; //number of collisions in the whole table
+	private int lastCollidedValue;
 
 	//########################
 	private int p;			//prime number to be used in MAD compression
