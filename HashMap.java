@@ -206,11 +206,11 @@ public class HashMap {
 
 		int len = k.length();
 		int z = 31;		//good prime number to avoid collisions
-		double total = 0;
+		int total = 0;
 
 		for (int i=0; i < len; i++) {
-			int val = (int) k.charAt(i);
-			val = val *  ((int)  (Math.pow(z, i)) );
+			double val = (double) k.charAt(i);
+			val = val *  ((double)  (Math.pow(z, i)) );
 			total += val;
 		}
 
@@ -223,9 +223,9 @@ public class HashMap {
 		int a = capacity-1;	// a mod N != 0
 		int b = 2;		// b can be any nonnegative int
 
-		double finalKey = ((a * total) + b ) % capacity;
+		int finalKey = ((a * total) + b ) % capacity;
 
-		return (int) finalKey;
+		return finalKey;
 
 	}
 
@@ -234,17 +234,16 @@ public class HashMap {
 
 		int len = k.length();
 		int z = 31;		//good prime number to avoid collisions
-		double total = 0;
+		int total = 0;
 
 		for (int i=0; i < len; i++) {
-			int val = (int) k.charAt(i);
-			val = val *  ((int)  (Math.pow(z, i)) );
+			double val = ((double)  (Math.pow(z, i)));
 			total += val;
 		}
 
 		//total is the integer equiv
 
-		return (int) (z - (total % z) );
+		return (z - (total % z) );
 
 	}
 
