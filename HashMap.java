@@ -15,6 +15,9 @@ public class HashMap {
 	
 	//########################
 	private int p;			//prime number to be used in MAD compression
+	
+	//########################
+	private int lastCollidedValue;
 
 	public HashMap(){
 		capacity = 101; //a prime number for the size of the array
@@ -137,6 +140,11 @@ public class HashMap {
 
 			//*************************************************************************
 
+			
+			//############# collision happened, take note
+			lastCollidedValue = hashVal;
+			
+			
 			if (collisionHandlingType == 'D')
 				hashVal = (hashVal + hashSec(k)) % capacity; 
 			else if (collisionHandlingType == 'Q'){
@@ -161,7 +169,6 @@ public class HashMap {
 			System.out.println(k + " was not found in the Table.");
 		}
 		else{
-
 			int hashValToBeRemoved = hashMe(k);
 
 			if(emptyMarkerScheme == 'A')
@@ -176,7 +183,11 @@ public class HashMap {
 				//############ rehash after remove ###############
 
 				// get the next hash (Q or D) from this current hash, then 
-
+				
+				hashTable [hashValToBeRemoved]  = hashTable[lastCollidedValue ];
+			
+				
+				/*
 				while(hashTable[tempHashVal] != null && hashTable[tempHashVal].getKey().equals(k)){
 					if (collisionHandlingType == 'D')
 						tempHashVal = (tempHashVal + hashSec(k))%capacity; 	
@@ -194,6 +205,10 @@ public class HashMap {
 					hashTable[tempHashVal] = null;
 					hashValToBeRemoved = tempHashVal;
 				}
+				*/
+				
+			
+				
 				//empty the location of last copied entry
 				hashTable[hashValToBeRemoved] = null;
 				//##########################################################
@@ -397,7 +412,6 @@ public class HashMap {
 		if(maxCollisionCtr < arr[hashVal].getNumOfCollision()){
 			maxCollisionCtr = arr[hashVal].getNumOfCollision();
 		}
-
 
 	}
 	
