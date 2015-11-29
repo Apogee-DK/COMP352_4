@@ -205,8 +205,8 @@ public class HashMap {
 		// converts strings to integers
 
 		int len = k.length();
-		int z = 31;		//good prime number to avoid collisions
-		int total = 0;
+		int z = 13;		//good prime number to avoid collisions
+		double total = 0;
 
 		for (int i=0; i < len; i++) {
 			double val = (double) k.charAt(i);
@@ -223,9 +223,9 @@ public class HashMap {
 		int a = capacity-1;	// a mod N != 0
 		int b = 2;		// b can be any nonnegative int
 
-		int finalKey = ((a * total) + b ) % capacity;
+		double finalKey = ((a * total) + b ) % capacity;
 
-		return finalKey;
+		return (int) finalKey;
 
 	}
 
@@ -233,8 +233,8 @@ public class HashMap {
 	public int hashSec(String k) {
 
 		int len = k.length();
-		int z = 31;		//good prime number to avoid collisions
-		int total = 0;
+		int z = 7;		//good prime number to avoid collisions
+		double total = 0;
 
 		for (int i=0; i < len; i++) {
 			double val = ((double)  (Math.pow(z, i)));
@@ -243,7 +243,7 @@ public class HashMap {
 
 		//total is the integer equiv
 
-		return (z - (total % z) );
+		return (int) (z - (total % z) );
 
 	}
 
@@ -307,9 +307,6 @@ public class HashMap {
 			}
 		}
 		
-		System.out.println(tempElt);
-		System.out.println(sum);
-
 		if(tempElt == 0){
 			return 0;
 		}
