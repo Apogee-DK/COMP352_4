@@ -244,7 +244,7 @@ public class HashMap {
 
 	//CHECKS IF THE CELL IS EMPTY
 	public boolean isEmptyCell(int hashVal, String k){
-		if(hashTable[hashVal] == null || hashTable[hashVal].equals("- " + k)) //WHEN I REMOVE A VALUE FROM THE TABLE, I INPUT -1 TO LEAVE A TRACE
+		if(hashTable[hashVal] == null || hashTable[hashVal].equals("- " + k) || hashTable[hashVal].getAvailability()) //WHEN I REMOVE A VALUE FROM THE TABLE, I INPUT -1 TO LEAVE A TRACE
 			return true;		
 		return false;
 	}
