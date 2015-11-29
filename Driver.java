@@ -239,7 +239,7 @@ public class Driver {
 		int counter = 0;
 		//REMOVING STRINGS
 		for(HashEntry entry: h.values()){
-			if(counter > 1000){
+			if(counter > 10000){
 				break;
 			}
 			if(entry == null){
