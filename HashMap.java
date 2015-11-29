@@ -221,6 +221,7 @@ public class HashMap {
 
 	}
 
+	//DOUBLE HASHING FUNCTION
 	public int hashSec(String k) {
 
 		int len = k.length();
