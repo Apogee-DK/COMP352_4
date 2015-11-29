@@ -79,7 +79,7 @@ public class HashMap {
 
 			for(HashEntry h : hashTable){ //rehashing everything into the newly created array
 				if(h != null){
-
+					h.resetCollisionNumber(); //different table means different amount of collisions
 					int quadCtr = 0;
 					int hashVal = hashMe(h.getKey()); 
 					while(!isEmptyCell(tempTable, hashVal, h.getKey())){
