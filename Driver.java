@@ -66,11 +66,35 @@ public class Driver {
 		
 		// 1st text file
 		//1st case , N, Q, resize = 1.3, loadFactor = 0.75
-		deliverableC('N','Q',"1.3",0.75, "hash_test_file1.txt" );
+		deliverableC('A','Q',"1.3",0.75, "hash_test_file1.txt" ); //this works
 		
 		// 2nd text file
 		//1st case , N, D, resize = 1.2, loadFactor = 0.5
+		
+		deliverableC('A','Q',"1.2",0.5, "hash_test_file2.txt" ); //this works
+		
+		deliverableC('A','D',"1.3",0.75, "hash_test_file1.txt" ); //this works
+		
+		deliverableC('A','D',"1.2",0.5, "hash_test_file2.txt" ); //this works
+		
+		
+		deliverableC('N','D',"1.3",0.75, "hash_test_file1.txt" );
+		
 		deliverableC('N','D',"1.2",0.5, "hash_test_file2.txt" );
+		
+		deliverableC('N','Q',"1.3",0.75, "hash_test_file1.txt" );
+
+		deliverableC('N','Q',"1.2",0.5, "hash_test_file2.txt" );
+		
+		
+		
+		deliverableC('R','D',"1.3",0.75, "hash_test_file1.txt" );
+			
+		deliverableC('R','D',"1.2",0.5, "hash_test_file2.txt" );
+		
+		deliverableC('R','Q',"1.3",0.75, "hash_test_file1.txt" );
+
+		deliverableC('R','Q',"1.2",0.5, "hash_test_file2.txt" );
 
 	}
 
@@ -215,7 +239,7 @@ public class Driver {
 		int counter = 0;
 		//REMOVING STRINGS
 		for(HashEntry entry: h.values()){
-			if(counter > 10000){
+			if(counter > 1000){
 				break;
 			}
 			if(entry == null){
@@ -227,19 +251,27 @@ public class Driver {
 		
 		for(HashEntry entry: h.values()){
 			if(counter == 0){
-				System.out.println("Press ENTER to continue to add the first 10000 strings in " + filename + "...");
+				System.out.println("Press ENTER to continue to get strings without the first 10000 from " + filename + "...");
 				kb.nextLine();
-			}
-			else
 				counter--;
+			}
+			else if(counter == -1){
+				if(entry == null)
+					System.out.println("null");
+				else
+					System.out.println(h.values()[h.get(entry.getValue())]);
+			}
 			
-			if(entry == null)
-				System.out.println("null");
-			else
-				System.out.println(h.get(entry.getKey()));
-			
+			else{
+				if(entry == null)
+					System.out.println("null");
+				else
+					System.out.println(h.values()[h.get(entry.getValue())]);
+				counter--;
+			}			
 		}
-		System.out.println("Press ENTER to continue to add the first 10000 strings in " + filename + "...");
+		
+		System.out.println("Press ENTER to continue to add the first 10000 strings from " + filename + "...");
 		kb.nextLine();
 		
 		
@@ -252,12 +284,10 @@ public class Driver {
 			if(entry == null)
 				System.out.println("null");
 			else
-				System.out.println(h.get(entry.getKey()));
+				System.out.println(h.values()[h.get(entry.getValue())]);
 		}
 		System.out.println("Press ENTER to continue to next test...");
 		kb.nextLine();
-		
-		
 
 	}
 	
