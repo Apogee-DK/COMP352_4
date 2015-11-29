@@ -12,9 +12,10 @@ public class HashMap {
 	private char emptyMarkerScheme = ' ';
 	private int maxCollisionCtr = 0; //maximum number of collisions for one cell
 	private int numOfCollisionCtr = 0; //number of collisions in the whole table
-
-	//########################
 	private int p;			//prime number to be used in MAD compression
+	
+	//########################
+	private int lastCollidedValue;
 
 	public HashMap(){
 		capacity = 101; //a prime number for the size of the array
@@ -132,6 +133,10 @@ public class HashMap {
 
 			//*************************************************************************
 
+			//############# collision happened, take note
+			lastCollidedValue = hashVal;
+			
+			
 			if (collisionHandlingType == 'D')
 				hashVal = (hashVal + hashSec(k)) % capacity; 
 			else if (collisionHandlingType == 'Q'){
@@ -164,12 +169,23 @@ public class HashMap {
 				hashTable[hashValToBeRemoved]	= new DeletedEntry("- " + k);
 			}
 			else if(emptyMarkerScheme =='R'){
-				int tempHashVal = hashValToBeRemoved;	// this will jump through the array looking for next entry with same hash
+				//int tempHashVal = hashValToBeRemoved;	// this will jump through the array looking for next entry with same hash
 
+				
+				//##########################################################
+				hashTable [hashValToBeRemoved]  = hashTable[lastCollidedValue ];
+				
+				hashTable[lastCollidedValue ] = null;
+				
 				//############ rehash after remove ###############
 
 				// get the next hash (Q or D) from this current hash, then 
 
+				
+
+				
+				
+				/*
 				while(hashTable[tempHashVal] != null && hashTable[tempHashVal].getKey().equals(k)){
 					if (collisionHandlingType == 'D')
 						tempHashVal = (tempHashVal + hashSec(k))%capacity; 	
@@ -187,9 +203,14 @@ public class HashMap {
 					hashTable[tempHashVal] = null;
 					hashValToBeRemoved = tempHashVal;
 				}
+				
+				
 				//empty the location of last copied entry
 				hashTable[hashValToBeRemoved] = null;
-				//##########################################################
+				*/
+				
+
+			
 			}
 			numOfElements--;
 		}
