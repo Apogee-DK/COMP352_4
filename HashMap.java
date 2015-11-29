@@ -12,13 +12,19 @@ public class HashMap {
 	private char emptyMarkerScheme = ' ';
 	private int maxCollisionCtr = 0; //maximum number of collisions for one cell
 	private int numOfCollisionCtr = 0; //number of collisions in the whole table
-
+	
+	//########################
+	private int p;			//prime number to be used in MAD compression
 
 	public HashMap(){
 		capacity = 100;
 		hashTable = new HashEntry[capacity];
 		for (int i=0; i < capacity; i++)
 			hashTable[i] = null;
+		
+		//#################
+		p = findNextPrime(capacity);
+		
 	}
 
 	public HashMap(int cap){
@@ -26,6 +32,9 @@ public class HashMap {
 		hashTable = new HashEntry[cap];
 		for (int i=0; i < cap; i++)
 			hashTable[i] = null;
+		
+		//#################
+		p = findNextPrime(capacity);
 	}
 
 
@@ -64,10 +73,20 @@ public class HashMap {
 		//MUST ADD EXTEND ARRAY METHOD HERE
 		if(loadFactor < (double) size()/capacity){
 			if(factorOrNumber.equals("Multiply by ")){
+				
 				capacity *= incFactor;
+				
+				//#################
+				p = findNextPrime(capacity);
+				
 			}
 			else if(factorOrNumber.equals("Add ")){
-				capacity += incNumber;				
+				
+				capacity += incNumber;		
+				
+				//#################
+				p = findNextPrime(capacity);
+				
 			}
 
 			HashEntry [] tempTable = new HashEntry[capacity];
@@ -217,14 +236,17 @@ public class HashMap {
 		//now total is the integer equivalent of the string
 		//System.out.println("Integer equiv of " + k + " is " + total);
 
-		//######## COMPRESSION MAP
+		//######## MAD COMPRESSION MAP
 		// integers to array index
 		// we use MAD 
 		int a = capacity-1;	// a mod N != 0
 		int b = 2;		// b can be any nonnegative int
 
-		double finalKey = ((a * total) + b ) % capacity;
+		//double finalKey = ((a * total) + b ) % capacity;
 
+		//#################
+		double finalKey = (((a * total) + b ) % p) % capacity;
+		
 		return (int) finalKey;
 
 	}
