@@ -35,6 +35,11 @@ public class HashEntry extends Available{
 		return value;
 	}
 	
+	
+	public void resetCollisionNumber(){
+		collisionNumber = 0;
+	}
+	
 	public void incNumOfCollision(){
 		collisionNumber++;
 	}
