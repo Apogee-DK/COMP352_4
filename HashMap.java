@@ -12,7 +12,6 @@ public class HashMap {
 	private char emptyMarkerScheme = ' ';
 	private int maxCollisionCtr = 0; //maximum number of collisions for one cell
 	private int numOfCollisionCtr = 0; //number of collisions in the whole table
-	private int lastCollidedValue;
 
 	//########################
 	private int p;			//prime number to be used in MAD compression
@@ -49,7 +48,7 @@ public class HashMap {
 
 		int quadCtr=0;
 
-		while(hashTable[hashVal] != null && !hashTable[hashVal].getKey().equals(k)){
+		while(hashTable[hashVal] != null && !hashTable[hashVal].getValue().equals(k)){
 
 			if (collisionHandlingType == 'D')
 				hashVal = (hashVal + hashSec(k))%capacity; 
@@ -101,12 +100,12 @@ public class HashMap {
 				if(h != null){
 					h.resetCollisionNumber(); //different table means different amount of collisions
 					int quadCtr = 0;
-					int hashVal = hashMe(h.getKey()); 
-					while(!isEmptyCell(tempTable, hashVal, h.getKey())){
+					int hashVal = hashMe(h.getValue()); 
+					while(!isEmptyCell(tempTable, hashVal, h.getValue())){
 						setCollisionNumber(tempTable, hashVal); //setting the number of collision for all the elements	again							
 						//CHECK WHICH COLLISION HANDLER WAS CHOSEN
 						if (collisionHandlingType == 'D')
-							hashVal = (hashVal + hashSec(h.getKey())) % capacity; 
+							hashVal = (hashVal + hashSec(h.getValue())) % capacity; 
 						else if (collisionHandlingType == 'Q'){
 							quadCtr++;
 							hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;
