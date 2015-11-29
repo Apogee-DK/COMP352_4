@@ -74,25 +74,30 @@ public class Driver {
 
 	}
 
+	
+	private static void setHashTable(HashMap h, char e, char c, String rf, double rt){
+		
+		h.setEmptyMarkerScheme(e);
+		h.setCollisionHandling(c);
+		h.setRehashFactor(rf);
+		h.setRehashThreshold(rt);	
+		
+	}
+	
+	
 	/**
 	 * 
 	 * @param h HashMap
 	 * @param filename filename to load
 	 * @param bound first N elements in the file to load, -1 for all
 	 */
-	public static void readFile (HashMap h, String filename, int bound)  {
+	private static void readFile (HashMap h, String filename, int bound)  {
 		
 		boolean bounded = true;
 		int ctr=0;
 		
 		if (bound == -1)
 			bounded = false;
-			
-		
-		h.setEmptyMarkerScheme('N');
-		h.setCollisionHandling('D');
-		h.setRehashFactor("1.3");
-		h.setRehashThreshold(0.4);
 		
 		Scanner inFile = null;	
 		
@@ -127,11 +132,7 @@ public class Driver {
 
 		HashMap h = new HashMap(100);
 		
-		h.setEmptyMarkerScheme(e);
-		h.setCollisionHandling(c);
-		h.setRehashFactor(rf);
-		h.setRehashThreshold(rt);
-	
+		setHashTable(h, e, c, rf, rt);	
 		readFile(h, filename, 1000);		//first n elements
 		System.out.println("First 1000 of file " + filename);
 		h.printHastableStatistic();
@@ -140,6 +141,7 @@ public class Driver {
 		System.out.println("Press ENTER to continue to next test...");
 		kb.nextLine();
 		
+		setHashTable(h, e, c, rf, rt);
 		readFile(h, filename, 3000);	
 		System.out.println("First 3000 of file " + filename);
 		h.printHastableStatistic();
@@ -148,6 +150,7 @@ public class Driver {
 		System.out.println("Press ENTER to continue to next test...");
 		kb.nextLine();
 		
+		setHashTable(h, e, c, rf, rt);
 		readFile(h, filename, 5000);	
 		System.out.println("First 5000 of file " + filename);
 		h.printHastableStatistic();
@@ -156,6 +159,7 @@ public class Driver {
 		System.out.println("Press ENTER to continue to next test...");
 		kb.nextLine();
 		
+		setHashTable(h, e, c, rf, rt);
 		readFile(h, filename, 10000);	
 		System.out.println("First 10000 of file " + filename);
 		h.printHastableStatistic();
@@ -164,6 +168,7 @@ public class Driver {
 		System.out.println("Press ENTER to continue to next test...");
 		kb.nextLine();
 		
+		setHashTable(h, e, c, rf, rt);
 		readFile(h, filename, 50000);	
 		System.out.println("First 50000 of file " + filename);
 		h.printHastableStatistic();
@@ -172,6 +177,7 @@ public class Driver {
 		System.out.println("Press ENTER to continue to next test...");
 		kb.nextLine();
 		
+		setHashTable(h, e, c, rf, rt);
 		readFile(h, filename, 100000);
 		System.out.println("First 100000 of file " + filename);
 		h.printHastableStatistic();
@@ -180,6 +186,7 @@ public class Driver {
 		System.out.println("Press ENTER to continue to next test...");
 		kb.nextLine();
 		
+		setHashTable(h, e, c, rf, rt);
 		readFile(h, filename, 150000);
 		System.out.println("First 150000 of file " + filename);
 		h.printHastableStatistic();
@@ -188,6 +195,7 @@ public class Driver {
 		System.out.println("Press ENTER to continue to next test...");
 		kb.nextLine();
 		
+		setHashTable(h, e, c, rf, rt);
 		readFile(h, filename, 200000);
 		System.out.println("First 200000 of file " + filename);
 		h.printHastableStatistic();
@@ -196,16 +204,58 @@ public class Driver {
 		System.out.println("Press ENTER to continue to next test...");
 		kb.nextLine();
 		
+		setHashTable(h, e, c, rf, rt);
 		readFile(h, filename, -1);		// ALL
 		System.out.println("ALL of file " + filename);
 		h.printHastableStatistic();
-		h.resetHashtableStatistics();
 		
 		System.out.println("Press ENTER to continue to next test...");
 		kb.nextLine();
 		
-		//##### TO DO #########
-		// c ii - remove
+		int counter = 0;
+		//REMOVING STRINGS
+		for(HashEntry entry: h.values()){
+			if(counter > 10000){
+				break;
+			}
+			if(entry == null){
+				continue;
+			}
+			h.remove(entry.getKey());
+			counter++;
+		}
+		
+		for(HashEntry entry: h.values()){
+			if(counter == 0){
+				System.out.println("Press ENTER to continue to add the first 10000 strings in " + filename + "...");
+				kb.nextLine();
+			}
+			else
+				counter--;
+			
+			if(entry == null)
+				System.out.println("null");
+			else
+				System.out.println(h.get(entry.getKey()));
+			
+		}
+		System.out.println("Press ENTER to continue to add the first 10000 strings in " + filename + "...");
+		kb.nextLine();
+		
+		
+		//ADDING 10000 STRINGS
+		readFile(h, filename, 10000);	
+		System.out.println("Modified Hash Table of file " + filename);
+		h.printHastableStatistic();		
+		
+		for(HashEntry entry: h.values()){
+			if(entry == null)
+				System.out.println("null");
+			else
+				System.out.println(h.get(entry.getKey()));
+		}
+		System.out.println("Press ENTER to continue to next test...");
+		kb.nextLine();
 		
 		
 
