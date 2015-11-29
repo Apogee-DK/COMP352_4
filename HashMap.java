@@ -36,7 +36,12 @@ public class HashMap {
 		int quadCtr=0;
 
 		while(hashTable[hashVal] != null && !hashTable[hashVal].getKey().equals(k)){
-			
+
+			if(hashTable[hashVal].getKey().equals("- " + k)){
+				System.out.println("Word removed. Not in table anymore!");
+				return null;
+			}
+
 			if (collisionHandlingType == 'D')
 				hashVal = (hashVal + hashSec(k))%capacity; 
 			else if (collisionHandlingType == 'Q'){
@@ -51,7 +56,7 @@ public class HashMap {
 
 	//ADDING VALUES INTO THE TABLE
 	public void put(String k, String v) {
-		
+
 		//**********************************************************************
 		//MUST ADD EXTEND ARRAY METHOD HERE
 		if(loadFactor < size()/capacity){
@@ -61,14 +66,14 @@ public class HashMap {
 			else if(factorOrNumber.equals("number")){
 				capacity += incNumber;				
 			}
-			
+
 			HashEntry [] tempTable = new HashEntry[capacity];
-			
-			
+
+
 			//RESET THE NUMBER OF COLLISIONS FOR NEW ARRAY
 			maxCollisionCtr = 0;
 			numOfCollisionCtr = 0; 
-			
+
 			for(HashEntry h : hashTable){ //rehashing everything into the newly created array
 				int quadCtr = 0;
 				int hashVal = hashMe(k); 
@@ -82,7 +87,7 @@ public class HashMap {
 						quadCtr++;
 					}
 				}
-				
+
 				tempTable[hashVal] = h;
 			}
 			hashTable = tempTable; 
@@ -91,16 +96,16 @@ public class HashMap {
 
 		int quadCtr=0;
 		int hashVal = hashMe(k); 
-	
-			
+
+
 		while(!isEmptyCell(hashVal, k)){	
-			
+
 			//*************************************************************************
 			//SETTING UP ALL THE COLLISION NUMBERS 
 			setCollisionNumber(hashVal);			
-			
+
 			//*************************************************************************
-			
+
 			if (collisionHandlingType == 'D')
 				hashVal = (hashVal + hashSec(k)) % capacity; 
 			else if (collisionHandlingType == 'Q'){
@@ -112,17 +117,53 @@ public class HashMap {
 		hashTable[hashVal] = new HashEntry(k, v);
 		numOfElements++;
 	}
-	
-	
+
+
 	//REMOVE A CERTAIN STRING BY USING THE KEY
 	public void remove(String k){
+
+		int quadCtr=0;
+
 		System.out.println("Trying to remove " + k + ". Searching for it in the Hash Table...");
 		if (get(k) == null){
 			System.out.println(k + "was not found in the Table.");
 		}
 		else{
-			int hashVal = hashMe(k);
-			hashTable[hashVal] = new DeletedEntry(k); //LEAVING A TRACE, SO WE KNOW THERE WAS AN ELEMENT THERE		
+
+			int hashValToBeRemoved = hashMe(k);
+
+			if(emptyMarkerScheme == 'A')
+				hashTable[hashValToBeRemoved]	= new DeletedEntry(new Available());
+
+			else if(emptyMarkerScheme == 'N')
+				hashTable[hashValToBeRemoved]	= new DeletedEntry("- " + k);
+
+			else if(emptyMarkerScheme =='R'){
+				int tempHashVal = hashValToBeRemoved;	// this will jump through the array looking for next entry with same hash
+
+				//############ rehash after remove ###############
+
+				// get the next hash (Q or D) from this current hash, then 
+
+				while(hashTable[tempHashVal] != null && hashTable[tempHashVal].getKey().equals(k)){
+					if (collisionHandlingType == 'D')
+						tempHashVal = (tempHashVal + hashSec(k))%capacity; 	
+					else if (collisionHandlingType == 'Q')
+					{
+						tempHashVal = (tempHashVal + ((int)Math.pow(quadCtr, 2))) % capacity; 
+						quadCtr++;
+					}
+
+					//at this point we have the key of the next one that should be in this place
+
+					//place that entry in the same place as the old one, effectively DELETING the previous
+					hashTable[hashValToBeRemoved] = new HashEntry(hashTable[tempHashVal].getKey(), hashTable[tempHashVal].getValue());
+					hashValToBeRemoved = tempHashVal;
+				}
+				//empty the location of last copied entry
+				hashTable[hashValToBeRemoved] = null;
+				//##########################################################
+			}
 			numOfElements--;
 		}
 
@@ -235,31 +276,42 @@ public class HashMap {
 		}
 		collisionHandlingType = type;
 	}
-	
-	
+
+
 	public void setEmptyMarkerScheme(char type){
-		
-		
-		
-		
-		
-		
-		
+		if(type != 'A' || type != 'N' || type != 'R'){
+			System.out.println("Wrong Collision Handler. Please try again!");
+		}
+		emptyMarkerScheme = type;
 	}
-	
-	
+
+	public char getEmptyMarkerScheme(){
+		return emptyMarkerScheme;
+	}
+
+
 	public double getAverageNumCollision(){	
-		return 1;
+		int tempElt = 0;
+		int sum = 0;
+
+		for(HashEntry h : hashTable){
+			if(h.getNumOfCollision() > 0){
+				tempElt++;
+				sum += h.getNumOfCollision();
+			}
+		}
+
+		return sum/tempElt;
 	}
-	
-	
+
+
 	public void printHastableStatistic(){
 		System.out.println("- Hash Statistic - \nLoad factor: " + loadFactor + "\nRehash factor: " + factorOrNumber +"\nCollision handling type: " + collisionHandlingType 
 				+ "\nEmpty marker scheme: " + emptyMarkerScheme + "\nSize of table: " + hashTable.length + "\nNumber of elements: " + numOfElements 
 				+ "\nNumber of collisions: " + numOfCollisionCtr + "\nMaximum number of collisions (single cell): " + maxCollisionCtr 
 				+ "\nAverage Number of Collision: " + getAverageNumCollision());	
 	}
-	
+
 	public void resetHashtableStatistics(){
 		numOfElements = 0;
 		loadFactor = 0.5; 	
@@ -271,8 +323,8 @@ public class HashMap {
 		maxCollisionCtr = 0;
 		numOfCollisionCtr = 0; 	
 	}
-	
-	
+
+
 	//****************************************************************************************************************************************  
 	// AUXILIARY METHODS
 	//****************************************************************************************************************************************
@@ -297,15 +349,15 @@ public class HashMap {
 		return true;
 	}
 
-	
+
 	public void setCollisionNumber(int hashVal){
 		numOfCollisionCtr++; //keep count of all collisions
 		hashTable[hashVal].incNumOfCollision(); //add 1 collision to the element
 		if(maxCollisionCtr < hashTable[hashVal].getNumOfCollision()){
 			maxCollisionCtr = hashTable[hashVal].getNumOfCollision();
 		}
-		
-		
+
+
 	}
 
 
