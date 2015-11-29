@@ -51,8 +51,8 @@ public class HashMap {
 		while(hashTable[hashVal] != null && !hashTable[hashVal].getKey().equals(k)){
 
 			if(hashTable[hashVal].getKey().equals("- " + k)){
-				System.out.println("Word removed. Not in Hash table anymore!");
-				return null;
+				System.out.print("Word removed. Not in Hash table anymore: ");
+				return hashTable[hashVal].getKey();
 			}
 
 			if (collisionHandlingType == 'D')
@@ -354,12 +354,15 @@ public class HashMap {
 		numOfElements = 0;
 		loadFactor = 0.5; 	
 		factorOrNumber = "";
-		incNumber = 1;
-		incFactor = 1.2;
+		incNumber = 0;
+		incFactor = 0;
 		collisionHandlingType = ' ';
 		emptyMarkerScheme = ' ';
 		maxCollisionCtr = 0;
-		numOfCollisionCtr = 0; 	
+		numOfCollisionCtr = 0;
+		for (int i=0; i < capacity; i++)
+			hashTable[i] = null;
+		capacity = 101;
 	}
 
 
