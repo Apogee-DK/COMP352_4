@@ -12,7 +12,9 @@ public class HashEntry extends Available{
 
 	}
 
-	HashEntry(Available av){}
+	HashEntry(Available av){
+		key = "AVAILABLE";
+	}
 	
 	public String getKey() {
 		
