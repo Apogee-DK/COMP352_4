@@ -36,8 +36,8 @@ public class HashMap {
 		int quadCtr=0;
 
 		if(hashTable[hashVal] == null){
-			System.out.println("Not part of Hash table!");
-			return null;
+			
+			return k + " is not part of Hash table!";
 		}
 		
 		while(hashTable[hashVal] != null && !hashTable[hashVal].getKey().equals(k)){
