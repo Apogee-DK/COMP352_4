@@ -41,7 +41,7 @@ public class HashEntry extends Available{
 		return collisionNumber;
 	}
 
-	public String toString(){
-		return getValue();
+	public String toString() {
+		return "[" + key + "] " + value; 
 	}
 }
