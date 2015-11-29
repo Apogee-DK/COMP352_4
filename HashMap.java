@@ -17,7 +17,7 @@ public class HashMap {
 	private int p;			//prime number to be used in MAD compression
 
 	public HashMap(){
-		capacity = 100;
+		capacity = 101; //a prime number for the size of the array
 		hashTable = new HashEntry[capacity];
 		for (int i=0; i < capacity; i++)
 			hashTable[i] = null;
@@ -28,9 +28,13 @@ public class HashMap {
 	}
 
 	public HashMap(int cap){
-		capacity = cap;
-		hashTable = new HashEntry[cap];
-		for (int i=0; i < cap; i++)
+		//make sure the size of the array is a prime number
+		if(isPrime(cap))
+			capacity = cap;
+		else
+			capacity = findNextPrime(cap);
+		hashTable = new HashEntry[capacity]; 
+		for (int i=0; i < capacity; i++)
 			hashTable[i] = null;
 		
 		//#################
@@ -74,7 +78,8 @@ public class HashMap {
 		if(loadFactor < (double) size()/capacity){
 			if(factorOrNumber.equals("Multiply by ")){
 				
-				capacity *= incFactor;
+				capacity = (int)(capacity * incFactor) + 1;
+				capacity = findNextPrime(capacity);
 				
 				//#################
 				p = findNextPrime(capacity);
@@ -83,7 +88,7 @@ public class HashMap {
 			else if(factorOrNumber.equals("Add ")){
 				
 				capacity += incNumber;		
-				
+				capacity = findNextPrime(capacity);
 				//#################
 				p = findNextPrime(capacity);
 				
@@ -224,7 +229,7 @@ public class HashMap {
 		// converts strings to integers
 
 		int len = k.length();
-		int z = 23;		//good prime number to avoid collisions
+		int z = 33;		//good prime number to avoid collisions
 		double total = 0;
 
 		for (int i=0; i < len; i++) {
@@ -239,8 +244,8 @@ public class HashMap {
 		//######## MAD COMPRESSION MAP
 		// integers to array index
 		// we use MAD 
-		int a = capacity-1;	// a mod N != 0
-		int b = 2;		// b can be any nonnegative int
+		int a = capacity/33;	// a mod N != 0
+		int b = capacity/23;	// b can be any nonnegative int
 
 		//double finalKey = ((a * total) + b ) % capacity;
 
@@ -255,17 +260,17 @@ public class HashMap {
 	public int hashSec(String k) {
 
 		int len = k.length();
-		int z = 23;		//good prime number to avoid collisions
+		int z = 33;		//good prime number to avoid collisions
 		double total = 0;
 
 		for (int i=0; i < len; i++) {
-			double val = ((double)  (Math.pow(z, i)));
+			double val = ((Math.pow(z, i)));
 			total += val;
 		}
 
 		//total is the integer equiv
 
-		return (int) (z - (total % z) );
+		return  (z - (int)(total % z) );
 
 	}
 
