@@ -5,6 +5,10 @@ public class Driver {
 	public static void main(String [] args){
 		
 		HashMap h1 = new HashMap(32);
+		h1.setEmptyMarkerScheme('A');
+		h1.setCollisionHandling('Q');
+		h1.setRehashFactor("1.2");
+		h1.setRehashThreshold(0.4);
 		
 		h1.put("i", "i");
 		h1.put("dex", "dex");
@@ -15,6 +19,11 @@ public class Driver {
 		}
 		
 		System.out.println(h1.size());
+		
+		h1.put("i", "i");
+		for(HashEntry h: h1.values()){
+			System.out.println(h);
+		}
 		
 		
 		System.out.println(h1.get("i"));
