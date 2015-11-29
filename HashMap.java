@@ -35,13 +35,8 @@ public class HashMap {
 
 		int quadCtr=0;
 
-		if(hashTable[hashVal] == null){
-			
-			return k + " is not part of Hash table!";
-		}
-		
 		while(hashTable[hashVal] != null && !hashTable[hashVal].getKey().equals(k)){
-
+			
 			if(hashTable[hashVal].getKey().equals("- " + k)){
 				System.out.println("Word removed. Not in Hash table anymore!");
 				return null;
@@ -54,6 +49,11 @@ public class HashMap {
 				hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity; 				
 			}
 		}
+		
+		if(hashTable[hashVal] == null){
+			return k + " is not part of Hash table!";
+		}
+		
 		return hashTable[hashVal].getValue();
 	}
 
@@ -63,10 +63,10 @@ public class HashMap {
 			//**********************************************************************
 			//MUST ADD EXTEND ARRAY METHOD HERE
 			if(loadFactor < size()/capacity){
-				if(factorOrNumber.equals("factor")){
+				if(factorOrNumber.equals("Multiply by ")){
 					capacity *= incFactor;
 				}
-				else if(factorOrNumber.equals("number")){
+				else if(factorOrNumber.equals("Add ")){
 					capacity += incNumber;				
 				}
 
@@ -263,11 +263,11 @@ public class HashMap {
 
 	public void setRehashFactor(String fN){
 		if(isInteger(fN)){
-			factorOrNumber = "number";
+			factorOrNumber = "Add ";
 			incNumber = Integer.parseInt(fN);
 		}
 		else if(isReal(fN)){
-			factorOrNumber = "factor";
+			factorOrNumber = "Multiply by ";
 			incFactor = Double.parseDouble(fN);
 		}
 		else
@@ -299,7 +299,7 @@ public class HashMap {
 		int sum = 0;
 
 		for(HashEntry h : hashTable){
-			if(h.getNumOfCollision() > 0){
+			if(h != null && h.getNumOfCollision() > 0){
 				tempElt++;
 				sum += h.getNumOfCollision();
 			}
@@ -310,10 +310,11 @@ public class HashMap {
 
 
 	public void printHastableStatistic(){
-		System.out.println("- Hash Statistic - \nLoad factor: " + loadFactor + "\nRehash factor: " + factorOrNumber +"\nCollision handling type: " + collisionHandlingType 
-				+ "\nEmpty marker scheme: " + emptyMarkerScheme + "\nSize of table: " + hashTable.length + "\nNumber of elements: " + numOfElements 
+		System.out.println("\n- Hash Statistic - \nLoad factor: " + loadFactor + "\nRehash factor: " + factorOrNumber + incFactor 
+				+ "\nCollision handling type: " + collisionHandlingType + "\nEmpty marker scheme: " + emptyMarkerScheme 
+				+ "\nSize of table: " + hashTable.length + "\nNumber of elements: " + numOfElements 
 				+ "\nNumber of collisions: " + numOfCollisionCtr + "\nMaximum number of collisions (single cell): " + maxCollisionCtr 
-				+ "\nAverage Number of Collision: " + getAverageNumCollision());	
+				+ "\nAverage number of collision: " + getAverageNumCollision());	
 	}
 
 	public void resetHashtableStatistics(){
