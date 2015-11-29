@@ -1,31 +1,36 @@
 
 public class Driver {
 
+	public static void main(String args[]) {
+		
+	HashMap h1 = new HashMap(50);
 	
-	public static void main(String [] args){
+	h1.setCollisionHandling('D');
+	
+	h1.setEmptyMarkerScheme('R');
 		
-		HashMap h1 = new HashMap(32);
-		
-		h1.put("i", "i");
-		h1.put("dex", "dex");
-		
+		h1.put("i", "ibc");
+		h1.put("i", "iaa");
+		h1.put("i", "irt");
+
+
 		
 		for(HashEntry h: h1.values()){
 			System.out.println(h);
 		}
+		
+		System.out.println(h1.get("i"));
 		
 		System.out.println(h1.size());
 		
 		
-		System.out.println(h1.get("i"));
-		
 		h1.remove("i");
 		
-		System.out.println("Should remove the first i");
 		
 		for(HashEntry h: h1.values()){
 			System.out.println(h);
 		}
-		
 	}
+	
+
 }
