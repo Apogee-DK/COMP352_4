@@ -12,7 +12,7 @@ public class HashMap {
 	private char emptyMarkerScheme = ' ';
 	private int maxCollisionCtr = 0; //maximum number of collisions for one cell
 	private int numOfCollisionCtr = 0; //number of collisions in the whole table
-	
+
 	//########################
 	private int p;			//prime number to be used in MAD compression
 
@@ -21,10 +21,10 @@ public class HashMap {
 		hashTable = new HashEntry[capacity];
 		for (int i=0; i < capacity; i++)
 			hashTable[i] = null;
-		
+
 		//#################
 		p = findNextPrime(capacity);
-		
+
 	}
 
 	public HashMap(int cap){
@@ -36,24 +36,19 @@ public class HashMap {
 		hashTable = new HashEntry[capacity]; 
 		for (int i=0; i < capacity; i++)
 			hashTable[i] = null;
-		
+
 		//#################
 		p = findNextPrime(capacity);
 	}
 
 
 	//GETTING THE VALUE FROM A SPECIFIC KEY	
-	public String get(String k) {
+	public int get(String k) {
 		int hashVal = hashMe(k);
 
 		int quadCtr=0;
 
 		while(hashTable[hashVal] != null && !hashTable[hashVal].getKey().equals(k)){
-
-			if(hashTable[hashVal].getKey().equals("- " + k)){
-				System.out.print("Word removed. Not in Hash table anymore: ");
-				return hashTable[hashVal].getKey();
-			}
 
 			if (collisionHandlingType == 'D')
 				hashVal = (hashVal + hashSec(k))%capacity; 
@@ -64,10 +59,10 @@ public class HashMap {
 		}
 
 		if(hashTable[hashVal] == null){
-			return null;
+			return -1;
 		}
 
-		return hashTable[hashVal].getValue();
+		return hashVal;
 	}
 
 	//ADDING VALUES INTO THE TABLE
@@ -77,21 +72,21 @@ public class HashMap {
 		//MUST ADD EXTEND ARRAY METHOD HERE
 		if(loadFactor < (double) size()/capacity){
 			if(factorOrNumber.equals("Multiply by ")){
-				
+
 				capacity = (int)(capacity * incFactor) + 1;
 				capacity = findNextPrime(capacity);
-				
+
 				//#################
 				p = findNextPrime(capacity);
-				
+
 			}
 			else if(factorOrNumber.equals("Add ")){
-				
+
 				capacity += incNumber;		
 				capacity = findNextPrime(capacity);
 				//#################
 				p = findNextPrime(capacity);
-				
+
 			}
 
 			HashEntry [] tempTable = new HashEntry[capacity];
@@ -157,19 +152,17 @@ public class HashMap {
 		int quadCtr=0;
 
 		System.out.println("Trying to remove " + k + ". Searching for it in the Hash Table...");
-		if (get(k) == null){
+		int hashValToBeRemoved = get(k);
+		if (hashValToBeRemoved == -1){
 			System.out.println(k + " was not found in the Table.");
 		}
 		else{
-
-			int hashValToBeRemoved = hashMe(k);
-
-			if(emptyMarkerScheme == 'A')
-				hashTable[hashValToBeRemoved]	= new DeletedEntry(new Available());
-
-			else if(emptyMarkerScheme == 'N')
+			if(emptyMarkerScheme == 'A'){
+				hashTable[hashValToBeRemoved]	= new DeletedEntry(new Available(), k);
+			}
+			else if(emptyMarkerScheme == 'N'){
 				hashTable[hashValToBeRemoved]	= new DeletedEntry("- " + k);
-
+			}
 			else if(emptyMarkerScheme =='R'){
 				int tempHashVal = hashValToBeRemoved;	// this will jump through the array looking for next entry with same hash
 
@@ -228,6 +221,11 @@ public class HashMap {
 		//############# HASH CODE MAP ##############
 		// converts strings to integers
 
+		if(k.charAt(0)=='-'){
+			k = k.substring(2);
+		}
+		
+		
 		int len = k.length();
 		int z = 33;		//good prime number to avoid collisions
 		double total = 0;
@@ -251,7 +249,7 @@ public class HashMap {
 
 		//#################
 		double finalKey = (((a * total) + b ) % p) % capacity;
-		
+
 		return (int) finalKey;
 
 	}
@@ -259,6 +257,10 @@ public class HashMap {
 	//DOUBLE HASHING FUNCTION
 	public int hashSec(String k) {
 
+		if(k.charAt(0)=='-'){
+			k = k.substring(2);
+		}
+		
 		int len = k.length();
 		int z = 33;		//good prime number to avoid collisions
 		double total = 0;
@@ -333,11 +335,11 @@ public class HashMap {
 				sum += h.getNumOfCollision();
 			}
 		}
-		
+
 		if(tempElt == 0){
 			return 0;
 		}
-		
+
 		return (float) sum/tempElt;
 	}
 
@@ -400,7 +402,7 @@ public class HashMap {
 
 
 	}
-	
+
 	public boolean isPrime(int n){
 		for(int i = 2; i < Math.sqrt(n); i++){
 			if(n%i == 0)
@@ -408,7 +410,7 @@ public class HashMap {
 		}		
 		return true;		
 	}
-	
+
 	public int findNextPrime(int n){
 		for(int i = n + 1; i < 2*n; i++){
 			if(isPrime(i)){
