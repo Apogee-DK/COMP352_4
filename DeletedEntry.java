@@ -8,8 +8,8 @@ public class DeletedEntry extends HashEntry{
 		super(k, k);
 	}
 	
-	public DeletedEntry(Available av){
-		super(av);
+	public DeletedEntry(Available av, String k){
+		super(av, k);
 	}
 	
 	
