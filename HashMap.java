@@ -149,15 +149,17 @@ public class HashMap {
 					if (collisionHandlingType == 'D')
 						tempHashVal = (tempHashVal + hashSec(k))%capacity; 	
 					else if (collisionHandlingType == 'Q')
-					{
+					{	quadCtr++;
 						tempHashVal = (tempHashVal + ((int)Math.pow(quadCtr, 2))) % capacity; 
-						quadCtr++;
+						
 					}
 
 					//at this point we have the key of the next one that should be in this place
 
 					//place that entry in the same place as the old one, effectively DELETING the previous
 					hashTable[hashValToBeRemoved] = new HashEntry(hashTable[tempHashVal].getKey(), hashTable[tempHashVal].getValue());
+					
+					hashTable[tempHashVal] = null;
 					hashValToBeRemoved = tempHashVal;
 				}
 				//empty the location of last copied entry
@@ -166,8 +168,6 @@ public class HashMap {
 			}
 			numOfElements--;
 		}
-
-
 	}
 
 	//RETURN AN ITERABLE COLLECTION OF HASH ENTRIES FROM THE TABLE
@@ -236,9 +236,7 @@ public class HashMap {
 
 		//total is the integer equiv
 
-		int q = 33 ;	// q < N, q is prime, ASSUME N is GREATER THAN 33
-
-		return (q - (total % q) );
+		return (z - (total % z) );
 
 	}
 
@@ -272,7 +270,7 @@ public class HashMap {
 	}
 
 	public void setCollisionHandling(char type){
-		if(type != 'Q' || type != 'D'){
+		if(type != 'Q' && type != 'D'){
 			System.out.println("Wrong Collision Handler. Please try again!");
 		}
 		collisionHandlingType = type;
@@ -280,8 +278,8 @@ public class HashMap {
 
 
 	public void setEmptyMarkerScheme(char type){
-		if(type != 'A' || type != 'N' || type != 'R'){
-			System.out.println("Wrong Collision Handler. Please try again!");
+		if(type != 'A' && type != 'N' && type != 'R'){
+			System.out.println("Wrong Empty Scheme Handler. Please try again!");
 		}
 		emptyMarkerScheme = type;
 	}
