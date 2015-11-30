@@ -244,20 +244,25 @@ public class HashMap {
 	//METHOD USED FOR REPLACING SCHEME
 	private void replaceCurrentHash(int hashVal){
 
+		//if the last collision value is null, -1 or if the lastHashCollisionValue is equal to its current hash value then do not do anything
+		//if(hashVal == -1 || hashTable[hashVal] == null || hashTable[hashVal].getLastHashCollisionValue() == hashTable[hashVal].getHashValue()){
+		//	return;
+		//}
+		
 		//Check if the last collision value is not -1 and not null
-		if (hashTable[hashVal].getLastHashCollisionValue() != -1 && hashTable[hashTable[hashVal].getLastHashCollisionValue()] != null){
+		 if (hashTable[hashVal].getLastHashCollisionValue() != -1 && hashTable[hashTable[hashVal].getLastHashCollisionValue()] != null){
 
 			hashTable[hashVal] = hashTable[hashTable[hashVal].getLastHashCollisionValue()]; //swap the last collision entry with the current entry
 
+			//replaceCurrentHash(hashTable[hashVal].getLastHashCollisionValue());
+			
 			hashTable[hashVal].setLastHashCollisionValue(hashTable[hashVal].getPrevHashCollisionValue()); //set the last collision attribute of the swapped entry as its previous collision entry
 
 			hashTable[hashVal].setPrevHashCollisionValue(-1); //set the previous hash value entry to -1
 
 		}
 
-		//if the last collision value is null then just remove the element
-		else
-			hashTable[hashVal] = null;
+
 
 	}
 
