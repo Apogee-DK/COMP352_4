@@ -18,7 +18,7 @@
  * 
  * More information about the hash function can be found in the PDF file.
  * 
- * In short, we use a prime number and the MOD function to hash the key value into an integer and we use that value to place the entry in its respective index.
+ * In short, we use a prime number and the MAD function to hash the key value into an integer and we use that value to place the entry in its respective index.
  * 
  * In this design, we have decided to use a prime number to represent the capacity (size) of our hash table. According to certain mathematicians, using a prime
  * number as the size of the hash table will reduce the number collisions. Also, the use of 33, 37, or 41 in our hash function will also reduce collisions.
@@ -31,8 +31,62 @@
  * The above attributes are used for our statistics method which displays interesting information about different hashing methods.
  * We are able to display these statistics since we keep track of all collisions.
  * 
- * For further information, please consult the PDF file which was included with this program
  * 
+ * Performance and design:
+ * 
+ * put(k, v)		- expected O(1), assuming good HashTable settings, 
+ *                  - first checks if the table needs to be resized based on loadFactor, then if it needs to be, resizes it based on the rehashFactor
+ *                  - handles collisions effectively, either Q or D, (it seemed D is better) 
+ *                  - if collisions happen, they are put into the HashEntry attribute as the last collision, and the previous collision for that entry
+ * 
+ * get(k)		- expected O(1), assuming good HashTable settings, 
+ * 				- checks the collisionHalding setting (Q or D) for which jump to use
+ * 				- gets hash then jumps to next hash (if needed), until desired entry is found
+ * 
+ * remove()		- expected O(1)
+ * 		3 modes
+ * 			Available - uses AVAILABLE as the marker for removed entries
+ * 			Negative  - uses negative value of the removed key
+ * 			Replace  - uses the 2 extra attributes in HashEntry that keeps track of the lastCollidedValue and previousCollidedValue  
+ * 				     - recursive method that replaces the entry to be removed with the last collision that happened 
+ *  				 - instead of shifting all entries to fill up the removed entry (which will be O(n))
+ * 
+ * hashMe()		- O(1)	 hash code map, including Polynomial method and MAD, uses prime numbers
+ * 							(see comment below for details)
+ * 
+ * hashSec()	- O(1)	 Double hash for one mode of collision handling, uses prime numbers
+ * 						(see comment below for details)
+ * 
+ * 
+ * RehashThreshold and RehashFactor 
+ * 
+ * loadFactor - determines if table should be extended
+ * rehashFactor - factor() or number
+ * 
+ * Collision-Handling Schemes
+ * 
+ * Q - Quadratic Probing  ########################
+ * iteratively tries the next buckets, until finds an empty one
+ * A[(h(k) + f(i))  mod N], i = 0,1,2,.. where f(i) = i^2
+ * it avoids some clustering patterns that occur with linear probing
+ * might create some secondary clustering, but
+ * its guaranteed to find an empty slot, because we keep N as prime
+ * 
+ *  D - Double hashing #######################
+ * prevents clustering, even the sec. clustering produced by linear
+ * provides a constant jump when there's a collision
+ * 
+ * h'(k) = q - (k mod q) is used
+ * q < N, q and N prime numbers
+ * 
+ */
+
+
+/*
+ * 
+ * HashMap class - contains the HashTable, its methods (put, get , remove)
+ * hashing functions - hashMe for the hash code, hashSec for Double Hash
+ * attribute variables (with their accessor and mutator) for obtianing  statistics
  * 
  */
 public class HashMap {
@@ -50,57 +104,74 @@ public class HashMap {
 	private int numOfCollisionCtr = 0; 			//number of collisions in the whole table
 	private int p;								//prime number to be used in MAD compression
 
+	
+	/*
+	 * default constructor for hashMap
+	 */
 	public HashMap(){
-		capacity = 101; //a prime number for the size of the array
-		hashTable = new HashEntry[capacity];
-		for (int i=0; i < capacity; i++)
+		capacity = 101; 	//a prime number for the initial capacity of the array
+		hashTable = new HashEntry[capacity];		
+		for (int i=0; i < capacity; i++)			//set every entry in the array as null first
 			hashTable[i] = null;
-
-		//#################
-		p = findNextPrime(capacity);
+		p = findNextPrime(capacity);				// get p for use with MAD
 	}
 
+	/*
+	 * paremeterized constructor for hashMap, given the initial capacity
+	 * 
+	 */
 	public HashMap(int cap){
 		//make sure the size of the array is a prime number
 		if(isPrime(cap))
 			capacity = cap;
 		else
-			capacity = findNextPrime(cap); //find the next prime number if the given value was not prime
+			capacity = findNextPrime(cap); 		//find the next prime number if the given value was not prime
 		hashTable = new HashEntry[capacity]; 
 		for (int i=0; i < capacity; i++)
-			hashTable[i] = null; //set every entry in the array as null first
+			hashTable[i] = null; 			//set every entry in the array as null first
 
-		//#################
-		p = findNextPrime(capacity);
+		p = findNextPrime(capacity);		// get p for use with MAD
 	}
 
 
-	//GETTING THE VALUE FROM A SPECIFIC KEY	
+	/*
+	 * get(k) 
+	 * 
+	 * expected O(1), depending on HashTable properties set
+	 * 
+	 * uses an aux method getHash(k)
+	 * 
+	 * GETTING THE VALUE FROM A SPECIFIC KEY	
+	 * 
+	 */
 	public String get(String k) {
-		int hashVal = getHash(k); //get the hash value for this specific string
+		int hashVal = getHash(k); 					//get the hash value for this specific string
 
-		if (hashVal == -1) //the string is not an element of the hash table
+		if (hashVal == -1) 						//the string is not an element of the hash table
 			return "Element not found.";
 
-		return hashTable[hashVal].toString(); //display the information of the entry
+		return hashTable[hashVal].toString(); 		//display the information of the entry
 	}
 
 	
 	//METHOD WHICH RETURNS THE HASHED VALUE OF A STRING
 	public int getHash(String k){
-		int hashVal = hashMe(k); 							//hash the string into an integer value
+		int hashVal = hashMe(k); 								//hash the string into an integer value
 
-		int quadCtr=0; 										//used for quadratic collision handler
+		int quadCtr=0; 											// used for quadratic collision handler 'Q'
 
-		//checks if the element at the index of the hash value is the same
+		//checks if the element is at the index  of the hash value is the same,
+		// COLLISION!
 		while(hashTable[hashVal] != null && !hashTable[hashVal].getValue().equals(k)){ 
-
-			//Do the following if they are not the same			
+		
 			if (collisionHandlingType == 'D') 				//for double hashing
 				hashVal = (hashVal + hashSec(k))%capacity;  
-			else if (collisionHandlingType == 'Q'){ 		//for quadratic 
+			else if (collisionHandlingType == 'Q'){ 		// QUADRATIC
+				
+				// we iteratively find next slot by increasing the value of quadCtr, then squaring it			
+				
 				quadCtr++;
-				hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity; 				
+				hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity; 			
 			}
 		}
 
@@ -113,8 +184,17 @@ public class HashMap {
 	}
 
 
-
-	//ADDING VALUES INTO THE TABLE
+	/* put(k,v)
+	 * 
+	 * ADDING VALUES INTO THE TABLE
+	 * 
+	 * expected O(1), depending on HashTable properties set
+	 * 
+	 * this uses an efficient hashMap function (polynomial and MAD)
+	 * as well as getting the next prime number for the capacity once it needs to resize 
+	 * resize is done by checking the loadFactor and rehashFactor set
+	 * 
+	 */
 	public void put(String k, String v) {
 
 		//**********************************************************************
@@ -127,20 +207,17 @@ public class HashMap {
 			//depending on the factor, it could either be a multiplication or an addition for the resize
 			if(factorOrNumber.equals("Multiply by ")){
 
-				capacity = (int)(capacity * incFactor) + 1;
+				capacity = (int)(capacity * incFactor) + 1;				// resize by a factor
 				capacity = findNextPrime(capacity); //prime numbers are the best for the size of a hash table, make sure it's prime
 
-				//#################
 				p = findNextPrime(capacity); //used for the hash function
 
 			}
 			else if(factorOrNumber.equals("Add ")){
 
-				capacity += incNumber;		
-				capacity = findNextPrime(capacity);
-				//#################
-				p = findNextPrime(capacity);
-
+				capacity += incNumber;					// resize by an increment
+				capacity = findNextPrime(capacity);		// find next prime, very important
+				p = findNextPrime(capacity);			// used for MAD
 			}
 
 			HashEntry [] tempTable = new HashEntry[capacity]; //create a temporary hash table which will hold all the values
@@ -164,9 +241,11 @@ public class HashMap {
 					while(!isEmptyCell(tempTable, hashVal, h.getValue())){ 
 						
 						//If there is do the following, CHECK WHICH COLLISION HANDLER WAS CHOSEN
-						if (collisionHandlingType == 'D')
+						if (collisionHandlingType == 'D')			// DOUVLE HASHING
 							hashVal = (hashVal + hashSec(h.getKey())) % capacity; 
-						else if (collisionHandlingType == 'Q'){
+						else if (collisionHandlingType == 'Q'){			// QUADRATIC
+							
+							// we iteratively find next slot by increasing the value of quadCtr, then squaring it	
 							quadCtr++;
 							hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;
 						}
@@ -216,7 +295,21 @@ public class HashMap {
 	}
 
 
-	//REMOVE A CERTAIN STRING BY USING THE KEY
+	/*
+	 * remove (k)
+	 * 
+	 * REMOVE A CERTAIN STRING BY USING THE KEY
+	 * 
+	 * expected O(1), depending on HashTable properties set
+	 * 
+	 * has 3 modes for marking the removed elements
+	 * 
+	 * A - marks an entry as AVAILABLE
+	 * N - uses negative value of the removed key
+	 * R - replace empty cell with element that caused a collision for this cell
+	 * 		- uses the replace scheme recursive method for efficiency
+	 * 
+	 */
 	public void remove(String k){
 
 		System.out.println("Trying to remove " + k + ". Searching for it in the Hash Table...");
@@ -225,23 +318,26 @@ public class HashMap {
 			System.out.println(k + " was not found in the Table.");
 		}
 		else{
-			if(emptyMarkerScheme == 'A'){
+			if(emptyMarkerScheme == 'A'){									// Available marking				
 				hashTable[hashValToBeRemoved]	= new DeletedEntry(new Available(), k);
 			}
-			else if(emptyMarkerScheme == 'N'){
+			else if(emptyMarkerScheme == 'N'){								// Negative marking
 				hashTable[hashValToBeRemoved]	= new DeletedEntry(k, k);
 			}
-			else if(emptyMarkerScheme =='R'){
-
-				replaceCurrentHash(hashValToBeRemoved); //call the Replace scheme recursion!
-
+			else if(emptyMarkerScheme =='R'){						// Replace
+				replaceCurrentHash(hashValToBeRemoved); 		//call the Replace scheme recursion!
 			}
-			numOfElements--;
-		}
+			numOfElements--;		//decrement size
+		}	
 	}
 
-	//Replace the current cell with the requested hash value index
-	//METHOD USED FOR REPLACING SCHEME
+	/* Replace the current cell with the requested hash value index
+	 * 
+	 * recursive replaceCurrentHash efficiently replaces the removed entry with the last collision for that entry
+	 * and does the same for the entry of that collision, but only does it twice (two shifts)
+	 * by keeping track of the lastCollidedValue and the previousCollidedValue
+	 * 
+	 */
 	private void replaceCurrentHash(int hashVal){
 
 		//if the last collision value is null, -1 or if the lastHashCollisionValue is equal to its current hash value then do not do anything
@@ -252,18 +348,14 @@ public class HashMap {
 		//Check if the last collision value is not -1 and not null
 		 if (hashTable[hashVal].getLastHashCollisionValue() != -1 && hashTable[hashTable[hashVal].getLastHashCollisionValue()] != null){
 
-			hashTable[hashVal] = hashTable[hashTable[hashVal].getLastHashCollisionValue()]; //swap the last collision entry with the current entry
+			hashTable[hashVal] = hashTable[hashTable[hashVal].getLastHashCollisionValue()]; 		//swap the last collision entry with the current entry
 
-			replaceCurrentHash(hashTable[hashVal].getLastHashCollisionValue()); //call the method again but for the swapped entry position!
+			replaceCurrentHash(hashTable[hashVal].getLastHashCollisionValue()); 		//call the method again but for the swapped entry position!
 			
-			hashTable[hashVal].setLastHashCollisionValue(hashTable[hashVal].getPrevHashCollisionValue()); //set the last collision attribute of the swapped entry as its previous collision entry
+			hashTable[hashVal].setLastHashCollisionValue(hashTable[hashVal].getPrevHashCollisionValue()); 	//set the last collision attribute of the swapped entry as its previous collision entry
 
 			hashTable[hashVal].setPrevHashCollisionValue(-1); //set the previous hash value entry to -1
-
 		}
-
-
-
 	}
 
 	//RETURN AN ITERABLE COLLECTION OF HASH ENTRIES FROM THE TABLE
@@ -286,7 +378,31 @@ public class HashMap {
 	}
 
 
-	//HASHING FUNCTION - I ADDED THIS TO THE HASHMAP CLASS
+	//HASHING FUNCTION
+	/*
+	 * this is the first hash function, that maps a given string (k) to an integer
+	 * in the range [0, N-1], N is the current capacity of the array
+	 * 
+	 * 2 parts
+	 * 
+	 * 1. Hash Code - Polynomial
+	 * 
+	 * polynomial hash code is used, getting the ASCII equiv of each character in the string
+	 * and giving a weight to each character. Then the total is obtained
+	 * 
+	 * ie. X0 * a^n-1 + X1 * a^n-2 + ... + Xn-2 * a + Xn-1
+	 * 
+	 * here, 33 is used as a
+	 * 
+	 * 2. Compression - MAD (Multiply-Add-And-Divide)
+	 * 
+	 * [(a*i + b) mod p] mod N
+	 * 
+	 * N is the current size of the array
+	 * p is the prime number larger than N
+	 * a and b integers , st. a > 0, here a and b used are prime numbers
+	 * 
+	 */
 	public int hashMe(String k) {
 		//k is the key, N is the capacity of array/ hash hashTable
 		//############# HASH CODE MAP ##############
@@ -296,11 +412,12 @@ public class HashMap {
 			k = k.substring(2);
 		}
 
-
 		int len = k.length();
 		int z = 33;		//good prime number to avoid collisions
 		double total = 0;
 
+		// get the ASCII of each char by casting into double
+		// mutiplying by the z^i, i = 0,1,2,3...
 		for (int i=0; i < len; i++) {
 			double val = (double) k.charAt(i);
 			val = val *  ((double)  (Math.pow(z, i)) );
@@ -310,22 +427,31 @@ public class HashMap {
 		//now total is the integer equivalent of the string
 		//System.out.println("Integer equiv of " + k + " is " + total);
 
-		//######## MAD COMPRESSION MAP
+		//######## MAD COMPRESSION Method ############
 		// integers to array index
 		// we use MAD 
-		int a = capacity/33;	// a mod N != 0
-		int b = capacity/23;	// b can be any nonnegative int
+		int a = capacity/33;		// a mod N != 0
+		int b = capacity/23;		// b can be any nonnegative int
 
-		//double finalKey = ((a * total) + b ) % capacity;
-
-		//#################
 		double finalKey = (((a * total) + b ) % p) % capacity;
 
 		return (int) finalKey;
 
 	}
 
-	//DOUBLE HASHING FUNCTION
+	//DOUBLE HASHING FUNCTION - Collision Handling Scheme 'D'
+	/*
+	 * a second hash is used as a jump value when collision occurs,
+	 * and it jumps until it finds a 
+	 * 
+	 * is obtained by using this formula
+	 * 
+	 * h'(k) = z - (k mod z)
+	 * 
+	 * k is the 1st hash obtained from hashMe
+	 * z is a prime number z < N, (we normally start with N>=100)
+	 * 
+	 */
 	public int hashSec(String k) {
 
 		if(k.charAt(0)=='-' && k.charAt(1)==' '){
@@ -341,10 +467,8 @@ public class HashMap {
 			total += val;
 		}
 
-		//total is the integer equiv
-
+		//total is the final integer equiv
 		return  (z - (int)(total % z) );
-
 	}
 
 	//CHECKS IF THE CELL IS EMPTY
@@ -476,8 +600,6 @@ public class HashMap {
 		if(maxCollisionCtr < arr[hashVal].getNumOfCollision()){
 			maxCollisionCtr = arr[hashVal].getNumOfCollision();
 		}
-
-
 	}
 
 	//CHECKING IF A NUMBER IS PRIME
@@ -489,14 +611,15 @@ public class HashMap {
 		return true;		
 	}
 
-	//METHOD TO FIND THE NEXT PRIME
+	//METHOD TO FIND THE NEXT PRIME, used particularly in MAD Compression
+	// where we need to get the 
 	public int findNextPrime(int n){
 		for(int i = n + 1; i < 2*n; i++){	//i < 2*n because if we arrive at 2*n then i is no longer a prime
 			if(isPrime(i)){
 				return i;
 			}
 		}
-		return -1; //this shouldn't happen
+		return -1; 	// default
 	}
 
 
