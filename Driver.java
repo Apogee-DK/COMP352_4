@@ -40,14 +40,22 @@ public class Driver {
 
 	public static void main(String [] args){
 
-
-		/*
+		Scanner input = new Scanner(System.in);
+		
 		HashMap h1 = new HashMap(100);
-		h1.setEmptyMarkerScheme('N');
-		h1.setCollisionHandling('D');
-		h1.setRehashFactor("1.3");
-		h1.setRehashThreshold(0.4);
+		
+		
+		/***********************************************************************
+		 * 1ST CASE 
+		 * NEGATIVE MARKING
+		 * DOUBLE HASHING
+		 * RESIZING FACTOR 1.3
+		 * LOAD FACTOR 0.4
+		 ***********************************************************************/
+		
+		setHashTable(h1, 'N', 'D', "1.3", 0.4); //SET THE HASH TABLE WITH ITS CORRESPONDING FACTORS 
 
+		System.out.println("In the process of adding 34 entries to the hash table. . . Done!");
 		h1.put("i", "i");
 		h1.put("dex", "dex");
 		h1.put("a", "a");
@@ -61,44 +69,361 @@ public class Driver {
 		h1.put("z", "z");
 		h1.put("trial", "trial");
 		h1.put("hcbn", "hcbn");
-		h1.put("n", "n");
-		h1.put("8EtSyfiwy5qScLq7jkLFmonomaniac0QtIj0LleC","aaa");
+		h1.put("not", "not");
+		h1.put("ally", "ally");
+		h1.put("death", "death");
+		h1.put("remember", "remember");
+		h1.put("awesome", "awesome");
+		h1.put("denial", "denial");
+		h1.put("nail", "nail");
+		h1.put("glimmer", "glimmer");
+		h1.put("continuum", "continuum");
+		h1.put("professional", "professional");
+		h1.put("gamer", "gamer");
+		h1.put("%e12341ra", "%e12341ra");
+		h1.put("oops", "oops");
+		h1.put("I", "I");
+		h1.put("did", "did");
+		h1.put("it", "it");
+		h1.put("again", "again");
+		h1.put("you", "you");
+		h1.put("are", "are");
+		h1.put("awesome", "awesome");
+		h1.put("so", "so");
+		h1.put("be", "be");
+		h1.put("nice", "nice");
+		
 
-		System.out.println("First output");
+		System.out.println("\nDISPLAY ALL THE ENTRIES IN THE HASH TABLE");
 		for(HashEntry h: h1.values()){
 			System.out.println(h);
 		}
 
+		System.out.println("\nRETURN THE SIZE OF THE HASH TABLE");
+		System.out.println(h1.values().length);
+
+		System.out.println("\nADD AN ADDITIONAL 5 EXTRA ELEMENTS TO CAUSE A RESIZE");
+		h1.put("This", "This");
+		h1.put("table", "table");
+		h1.put("better", "better");
+		h1.put("be", "be");
+		h1.put("resized", "resized");
+		h1.put("<--->", "<--->");	
+		System.out.println("Size of the table is now " + h1.values().length);
+		
+		
+		System.out.println("\nTRY TO RETURN AN ENTRY WHICH IS NOT PART OF THE HASH TABLE");
+		System.out.println(h1.get("stew"));
+		
+		System.out.println("\nRETURN AN ENTRY WHICH IS PART OF THE HASH TABLE -> Entry \"nail\"");
+		System.out.println(h1.get("nail"));		
+		
+		System.out.println("\nTRY TO REMOVE AN ENTRY WHICH IS NOT PART OF THE HASH TABLE");
+		h1.remove("Dexter"); //Not part of the array
+		
+		System.out.println("\nREMOVE AN ENTRY WHICH IS PART OF THE HASH TABLE");
+		System.out.println("NEGATIVE MARKING");
+		h1.remove("lenn"); 
+		h1.remove("be");
+		h1.remove("dex");
+		h1.remove("nice");
+
+		System.out.println();
+
+		//"-" should be displayed before every removed entry
+		System.out.println("DISPLAY LIST AGAIN AFTER REMOVAL");		
+		for(HashEntry h: h1.values()){
+			System.out.println(h);
+		}
+		
+		System.out.println("\nADD AN ADDITIONAL EXTRA ELEMENTS TO CAUSE A RESIZE");
+		h1.put("blah", "blah");
+		h1.put("wowzer", "wowzer");
+		h1.put("so", "so");
+		h1.put("beautiful", "beautiful");
+		h1.put("oh em gee", "oh em gee");
+		h1.put("assignment", "assignment");
+		h1.put("is very", "is very");
+		h1.put("long", "long");
+		h1.put("<--->", "<--->");	
+		h1.put("blah", "blah");
+		h1.put("wowzer", "wowzer");
+		h1.put("so", "so");
+		h1.put("beautiful", "beautiful");
+		h1.put("oh em gee", "oh em gee");
+		h1.put("assignment", "assignment");
+		h1.put("is very", "is very");
+		h1.put("long", "long");
+		h1.put("<--->", "<--->");
+		h1.put("hello", "hello");
+		h1.put("is", "is" );
+		h1.put("it", "it");
+		h1.put("me", "me");
+		h1.put("you're", "you're");
+		h1.put("looking", "looking");
+		h1.put("for", "for");
+		System.out.println("Size of the table is now " + h1.values().length);
+		
+		//AFTER A RESIZE, THERE SHOULD BE NO MORE MARKERS
+		System.out.println("\nDISPLAY LIST AGAIN AFTER REMOVAL, WE SHOULD NOT SEE ANY NEGATIVE MARKING ANYMORE");		
+		for(HashEntry h: h1.values()){
+			System.out.println(h);
+		}
+		
+		h1.printHastableStatistic();
+		h1.resetHashtableStatistics();
+		 
+
+		System.out.println("Please press enter to proceed to the next cases.");
+		input.nextLine();
+		
+		/***********************************************************************
+		 * 2ND CASE 
+		 * AVAILABLE MARKING
+		 * QUAD PROBING
+		 * RESIZING FACTOR 10 (INTEGER ADDITION)
+		 * LOAD FACTOR 0.7
+		 ***********************************************************************/
+		
+		setHashTable(h1, 'A', 'Q', "10", 0.4);
+		
+		System.out.println("In the process of adding 34 entries to the hash table. . . Done!");
+		h1.put("i", "i");
+		h1.put("dex", "dex");
+		h1.put("a", "a");
+		h1.put("e", "e");
+		h1.put("lenn", "lenn");
+		h1.put("knn", "knn");
+		h1.put("bn", "bn");
+		h1.put("ann", "ann");
+		h1.put("lna", "lna");
+		h1.put("dn", "dn");
+		h1.put("z", "z");
+		h1.put("trial", "trial");
+		h1.put("hcbn", "hcbn");
+		h1.put("not", "not");
+		h1.put("ally", "ally");
+		h1.put("death", "death");
+		h1.put("remember", "remember");
+		h1.put("awesome", "awesome");
+		h1.put("denial", "denial");
+		h1.put("nail", "nail");
+		h1.put("glimmer", "glimmer");
+		h1.put("continuum", "continuum");
+		h1.put("professional", "professional");
+		h1.put("gamer", "gamer");
+		h1.put("%e12341ra", "%e12341ra");
+		h1.put("oops", "oops");
+		h1.put("I", "I");
+		h1.put("did", "did");
+		h1.put("it", "it");
+		h1.put("again", "again");
+		h1.put("you", "you");
+		h1.put("are", "are");
+		h1.put("awesome", "awesome");
+		h1.put("so", "so");
+		h1.put("be", "be");
+		h1.put("nice", "nice");
+		
+
+		System.out.println("\nDISPLAY ALL THE ENTRIES IN THE HASH TABLE");
+		for(HashEntry h: h1.values()){
+			System.out.println(h);
+		}
+
+		System.out.println("\nRETURN THE SIZE OF THE HASH TABLE");
+		System.out.println(h1.values().length);
+
+		System.out.println("\nADD AN ADDITIONAL 5 EXTRA ELEMENTS TO CAUSE A RESIZE");
+		h1.put("This", "This");
+		h1.put("table", "table");
+		h1.put("better", "better");
+		h1.put("be", "be");
+		h1.put("resized", "resized");
+		h1.put("<--->", "<--->");	
+		System.out.println("Size of the table should have extra spots (increment of 10) -> " + h1.values().length);
+		
+		System.out.println("\nTRY TO RETURN AN ENTRY WHICH IS NOT PART OF THE HASH TABLE");
+		System.out.println(h1.get("stew"));
+		
+		System.out.println("\nRETURN AN ENTRY WHICH IS PART OF THE HASH TABLE -> Return entry \"nail\"");
+		System.out.println();
+		System.out.println(h1.get("nail"));		
+		
+		System.out.println("\nTRY TO REMOVE AN ENTRY WHICH IS NOT PART OF THE HASH TABLE");
+		h1.remove("I am in denial"); //Not part of the array
+		
+		System.out.println("\nREMOVE AN ENTRY WHICH IS PART OF THE HASH TABLE");
+		System.out.println("AVAILABLE MARKING");
+		h1.remove("lenn"); 
+		h1.remove("be");
+		h1.remove("dex");
+		h1.remove("nice");
+
+		//"_AVAILABLE_" should be shown as being the marker
+		System.out.println("\nDISPLAY LIST AGAIN AFTER REMOVAL");		
+		for(HashEntry h: h1.values()){
+			System.out.println(h);
+		}
+		
+		System.out.println("\nADD AN ADDITIONAL EXTRA ELEMENTS TO CAUSE A RESIZE");
+		h1.put("blah", "blah");
+		h1.put("wowzer", "wowzer");
+		h1.put("so", "so");
+		h1.put("beautiful", "beautiful");
+		h1.put("oh em gee", "oh em gee");
+		h1.put("assignment", "assignment");
+		h1.put("is very", "is very");
+		h1.put("long", "long");
+		h1.put("<--->", "<--->");
+		h1.put("hello", "hello");
+		h1.put("is", "is" );
+		h1.put("it", "it");
+		h1.put("me", "me");
+		h1.put("you're", "you're");
+		h1.put("looking", "looking");
+		h1.put("for", "for");
+
+		System.out.println("Size of the table is now " + h1.values().length);
+		
+		//AFTER A RESIZE, THERE SHOULD BE NO MORE MARKERS
+		System.out.println("\nDISPLAY LIST AGAIN AFTER REMOVAL, WE SHOULD NOT SEE ANY NEGATIVE MARKING ANYMORE");		
+		for(HashEntry h: h1.values()){
+			System.out.println(h);
+		}
+		
+		h1.printHastableStatistic();
+		h1.resetHashtableStatistics();
+		 
+
+		System.out.println("Please press enter to proceed to the next cases.");
+		input.nextLine();
+		
+		
+		/***********************************************************************
+		 * 3RD CASE 
+		 * REPLACE MARKING
+		 * DOUBLE HASHING
+		 * RESIZING FACTOR 1.7 (MULTIPLICATION)
+		 * LOAD FACTOR 0.5
+		 ***********************************************************************/
+		
+		setHashTable(h1, 'R', 'D', "1.7", 0.5);
+		
+		System.out.println("In the process of adding 34 entries to the hash table. . . Done!");
+		h1.put("i", "i");
+		h1.put("dex", "dex");
+		h1.put("a", "a");
+		h1.put("e", "e");
+		h1.put("lenn", "lenn");
+		h1.put("knn", "knn");
+		h1.put("bn", "bn");
+		h1.put("ann", "ann");
+		h1.put("lna", "lna");
+		h1.put("dn", "dn");
+		h1.put("z", "z");
+		h1.put("trial", "trial");
+		h1.put("hcbn", "hcbn");
+		h1.put("not", "not");
+		h1.put("ally", "ally");
+		h1.put("death", "death");
+		h1.put("remember", "remember");
+		h1.put("awesome", "awesome");
+		h1.put("denial", "denial");
+		h1.put("nail", "nail");
+		h1.put("glimmer", "glimmer");
+		h1.put("continuum", "continuum");
+		h1.put("professional", "professional");
+		h1.put("gamer", "gamer");
+		h1.put("%e12341ra", "%e12341ra");
+		h1.put("oops", "oops");
+		h1.put("I", "I");
+		h1.put("did", "did");
+		h1.put("it", "it");
+		h1.put("again", "again");
+		h1.put("you", "you");
+		h1.put("are", "are");
+		h1.put("awesome", "awesome");
+		h1.put("so", "so");
+		h1.put("be", "be");
+		h1.put("nice", "nice");
+		
+
+		System.out.println("\nDISPLAY ALL THE ENTRIES IN THE HASH TABLE");
+		for(HashEntry h: h1.values()){
+			System.out.println(h);
+		}
+
+		System.out.println("\nRETURN THE SIZE OF THE HASH TABLE");
 		System.out.println(h1.size());
 
-		System.out.println();
+		System.out.println("\nADD AN ADDITIONAL 5 EXTRA ELEMENTS TO CAUSE A RESIZE");
+		h1.put("This", "This");
+		h1.put("table", "table");
+		h1.put("better", "better");
+		h1.put("be", "be");
+		h1.put("resized", "resized");
+		h1.put("<--->", "<--->");	
+		h1.put("blah", "blah");
+		h1.put("wowzer", "wowzer");
+		h1.put("so", "so");
+		h1.put("beautiful", "beautiful");
+		h1.put("oh em gee", "oh em gee");
+		h1.put("assignment", "assignment");
+		h1.put("is very", "is very");
+		h1.put("long", "long");
+		h1.put("<--->", "<--->");
+		h1.put("hello", "hello");
+		h1.put("is", "is" );
+		h1.put("it", "it");
+		h1.put("me", "me");
+		h1.put("you're", "you're");
+		h1.put("looking", "looking");
+		h1.put("for", "for");
+		System.out.println("Size of the table should increase -> " + h1.size());
+		
+		System.out.println("\nTRY TO RETURN AN ENTRY WHICH IS NOT PART OF THE HASH TABLE");
 		System.out.println(h1.get("stew"));
-
-		h1.remove("zzenn");
+		
+		System.out.println("\nRETURN AN ENTRY WHICH IS PART OF THE HASH TABLE -> Return entry \"nail\"");
+		System.out.println(h1.get("nail"));		
+		
+		System.out.println("\nTRY TO REMOVE AN ENTRY WHICH IS NOT PART OF THE HASH TABLE");
+		h1.remove("I am in denial"); //Not part of the array
+		
+		System.out.println("\nREMOVE AN ENTRY WHICH IS PART OF THE HASH TABLE");
+		System.out.println("REPLACE MARKING");
+		h1.remove("lenn"); 
+		h1.remove("be");
+		h1.remove("dex");
+		h1.remove("nice");
 
 		System.out.println();
 
+		//ELEMENTS SHOULD BE SWAPPED TO THEIR IDEAL LOCATION (REAL HASH VALUE)
+		//THERE SHOULD BE NO MARKERS
+		System.out.println("\nDISPLAY LIST AGAIN AFTER REMOVAL");		
 		for(HashEntry h: h1.values()){
 			System.out.println(h);
 		}
-
-
-		h1.printHastableStatistic();
-		 */
-
-		/*
-		HashMap ha = new HashMap(100);
-		ha.setEmptyMarkerScheme('N');
-		ha.setCollisionHandling('D');
-		ha.setRehashFactor("1.3");
-		ha.setRehashThreshold(0.7);
-
-		for (int i=0; i < 900; i++) {
-			ha.put("put", "put");
-		}
-		 */
-
 		
+		h1.printHastableStatistic();
+		h1.resetHashtableStatistics();
+		 
+
+		System.out.println("Please press enter to proceed to the next cases.");
+		input.nextLine();
+		
+		
+		
+		//**************************************************************************************************************
+		//READING INPUTS FROM FILE AND INSERTING THEM INTO A HASH TABLE
+		//**************************************************************************************************************
+		
+		/****************************************************************************************
+		 * USED A HASHTABLE OF SIZE ~ 100 (-> 101) 
+		 ****************************************************************************************/
+			
 		//*******************************************************
 		//1ST TEST - DIFFERENT RESIZING FACTORS
 		//
@@ -109,9 +434,9 @@ public class Driver {
 		//*******************************************************
 
 		
-		//deliverableC('A','Q',"1.5",0.75, "hash_test_file1.txt" ); 
+		deliverableC('A','Q',"1.5",0.75, "hash_test_file1.txt", 100 ); 
 		
-		//deliverableC('A','Q',"1.2",0.75, "hash_test_file1.txt" ); 
+		deliverableC('A','Q',"1.2",0.75, "hash_test_file1.txt", 100 ); 
 
 		//*******************************************************
 		//2ND TEST (2nd file) - DIFFERENT LOAD FACTORS
@@ -122,9 +447,9 @@ public class Driver {
 		//loadFactor = 0.75 & 0.5
 		//*******************************************************
 		
-		//deliverableC('A','Q',"1.3",0.75, "hash_test_file2.txt"); 
+		deliverableC('A','Q',"1.3",0.75, "hash_test_file2.txt", 100); 
 		
-		//deliverableC('A','Q',"1.3",0.5, "hash_test_file2.txt"); 
+		deliverableC('A','Q',"1.3",0.5, "hash_test_file2.txt", 100); 
 		
 		//*******************************************************
 		//3RD TEST 	          - DIFFERENT MARKER SCHEME
@@ -136,9 +461,9 @@ public class Driver {
 		//loadFactor = 0.75 & 0.5
 		//*******************************************************
 
-		//deliverableC('A','D',"1.3",0.75, "hash_test_file1.txt" ); 
+		deliverableC('A','D',"1.3",0.75, "hash_test_file1.txt", 100 ); 
 
-		//deliverableC('A','D',"1.3",0.5, "hash_test_file1.txt" ); 
+		deliverableC('A','D',"1.3",0.5, "hash_test_file1.txt", 100 ); 
 
 		//*******************************************************
 		//4TH TEST 			  - DIFFERENT MARKER SCHEME
@@ -150,9 +475,9 @@ public class Driver {
 		//*******************************************************
 		
 		
-		//deliverableC('N','D',"1.3",0.6, "hash_test_file2.txt" ); 
+		deliverableC('N','D',"1.3",0.6, "hash_test_file2.txt", 100 ); 
 
-		//deliverableC('N','D',"1.1",0.4, "hash_test_file2.txt" ); 
+		deliverableC('N','D',"1.1",0.4, "hash_test_file2.txt", 100  ); 
 		
 		//*******************************************************
 		//5TH TEST 			  - DIFFERENT HANDLING
@@ -163,9 +488,9 @@ public class Driver {
 		//loadFactor = 0.6 & 0.4
 		//*******************************************************
 
-		//deliverableC('N','Q',"1.3",0.6, "hash_test_file1.txt" ); 
+		deliverableC('N','Q',"1.3",0.6, "hash_test_file1.txt", 100  ); 
 
-		//deliverableC('N','Q',"1.1",0.4, "hash_test_file1.txt" );
+		deliverableC('N','Q',"1.1",0.4, "hash_test_file1.txt", 100  );
 
 
 		//*******************************************************
@@ -178,9 +503,9 @@ public class Driver {
 		//*******************************************************		
 		
 
-		deliverableC('R','D',"1.3",0.4, "hash_test_file2.txt" );
+		deliverableC('R','D',"1.3",0.4, "hash_test_file2.txt", 100  );
 
-		deliverableC('R','D',"1.3",0.4, "hash_test_file2.txt" );
+		deliverableC('R','D',"1.3",0.4, "hash_test_file2.txt", 100  );
 		
 		//*******************************************************
 		//7TH TEST 			  - DIFFERENT HANDLING
@@ -191,10 +516,115 @@ public class Driver {
 		//loadFactor = 0.3 & 0.5
 		//*******************************************************	
 
-		deliverableC('R','Q',"1.3",0.3, "hash_test_file1.txt" );
+		deliverableC('R','Q',"1.3",0.3, "hash_test_file1.txt", 100  );
 
-		deliverableC('R','Q',"1.3",0.5, "hash_test_file1.txt" );
+		deliverableC('R','Q',"1.3",0.5, "hash_test_file1.txt", 100  );
 
+		
+		
+		/****************************************************************************************
+		 * SAME TEST CASE WHILE USING AN ARRAY OF SIZE WHICH IS BIG ENOUGH 
+		 * TO FIT ALL THE DATA FROM EITHER TEST FILE
+		 * 
+		 * SIZE USED IS 300000 
+		 ****************************************************************************************/
+		
+				
+		//*******************************************************
+		//1ST TEST - DIFFERENT RESIZING FACTORS
+		//
+		//Negative marking
+		//Quadratic
+		//resize = 1.5 & 1.2
+		//loadFactor = 0.75
+		//*******************************************************
+
+		
+		deliverableC('A','Q',"1.5",0.75, "hash_test_file1.txt", 300000 ); 
+		
+		deliverableC('A','Q',"1.2",0.75, "hash_test_file1.txt", 300000 ); 
+
+		//*******************************************************
+		//2ND TEST (2nd file) - DIFFERENT LOAD FACTORS
+		//						
+		//Negative marking
+		//Quadratic
+		//resize = 1.3
+		//loadFactor = 0.75 & 0.5
+		//*******************************************************
+		
+		deliverableC('A','Q',"1.3",0.75, "hash_test_file2.txt", 300000); 
+		
+		deliverableC('A','Q',"1.3",0.5, "hash_test_file2.txt", 300000); 
+		
+		//*******************************************************
+		//3RD TEST 	          - DIFFERENT MARKER SCHEME
+		//						DIFFERENT LOAD FACTOR
+		//						DIFFERENT HANDLING
+		//Negative marking
+		//Quadratic
+		//resize = 1.3
+		//loadFactor = 0.75 & 0.5
+		//*******************************************************
+
+		deliverableC('A','D',"1.3",0.75, "hash_test_file1.txt", 300000 ); 
+
+		deliverableC('A','D',"1.3",0.5, "hash_test_file1.txt", 300000 ); 
+
+		//*******************************************************
+		//4TH TEST 			  - DIFFERENT MARKER SCHEME
+		//						DIFFERENT RESIZE & LOAD FACTOR
+		//Negative marking
+		//Quadratic
+		//resize = 1.3 & 1.1
+		//loadFactor = 0.6 & 0.4
+		//*******************************************************
+		
+		
+		deliverableC('N','D',"1.3",0.6, "hash_test_file2.txt", 300000 ); 
+
+		deliverableC('N','D',"1.1",0.4, "hash_test_file2.txt", 300000  ); 
+		
+		//*******************************************************
+		//5TH TEST 			  - DIFFERENT HANDLING
+		//						
+		//Negative marking
+		//Quadratic
+		//resize = 1.3 & 1.1
+		//loadFactor = 0.6 & 0.4
+		//*******************************************************
+
+		deliverableC('N','Q',"1.3",0.6, "hash_test_file1.txt", 300000  ); 
+
+		deliverableC('N','Q',"1.1",0.4, "hash_test_file1.txt", 300000  );
+
+
+		//*******************************************************
+		//6TH TEST 			  - DIFFERENT MARKER
+		//						
+		//Negative marking
+		//Quadratic
+		//resize = 1.3
+		//loadFactor = 0.4
+		//*******************************************************		
+		
+
+		deliverableC('R','D',"1.3",0.4, "hash_test_file2.txt", 300000  );
+
+		deliverableC('R','D',"1.3",0.4, "hash_test_file2.txt", 300000  );
+		
+		//*******************************************************
+		//7TH TEST 			  - DIFFERENT HANDLING
+		//						DIFFERENT LOAD FACTOR
+		//Negative marking
+		//Quadratic
+		//resize = 1.3
+		//loadFactor = 0.3 & 0.5
+		//*******************************************************	
+
+		deliverableC('R','Q',"1.3",0.3, "hash_test_file1.txt", 300000  );
+
+		deliverableC('R','Q',"1.3",0.5, "hash_test_file1.txt", 300000  );		
 	}
 
 
@@ -214,9 +644,7 @@ public class Driver {
 		h.setCollisionHandling(c);
 		h.setRehashFactor(rf);
 		h.setRehashThreshold(rt);	
-
 	}
-
 
 	/**
 	 * 
@@ -264,8 +692,9 @@ public class Driver {
 	 * @param rf Rehash factor for the sizing (add or multiply)
 	 * @param rt Rehash Threshold which tells us when to resize
 	 * @param filename name of the file from which strings are read
+	 * @param size Size of the table
 	 */
-	public static void deliverableC(char e, char c, String rf, double rt, String filename)
+	public static void deliverableC(char e, char c, String rf, double rt, String filename, int size)
 	{
 		Scanner kb = new Scanner(System.in);
 
@@ -275,7 +704,7 @@ public class Driver {
 		double  totalElapsed = 0; 				//value which will be displayed after the deliverable method has completed its execution
 
 
-		HashMap h = new HashMap(100); 			//instantiate a hashmap with size of approximately 100
+		HashMap h = new HashMap(size); 			//instantiate a hashmap with size of approximately 100
 
 		//---------------------------------------------------------------------
 		//FIRST 1000 STRINGS
