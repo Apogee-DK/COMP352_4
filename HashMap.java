@@ -217,8 +217,6 @@ public class HashMap {
 	//REMOVE A CERTAIN STRING BY USING THE KEY
 	public void remove(String k){
 
-		//int quadCtr=0;
-
 		System.out.println("Trying to remove " + k + ". Searching for it in the Hash Table...");
 		int hashValToBeRemoved = getHash(k);
 		if (hashValToBeRemoved == -1){
