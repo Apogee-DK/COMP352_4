@@ -7,14 +7,16 @@ public class Driver {
 	public static void main(String [] args){
 
 
-		/*
+		
 		HashMap h1 = new HashMap(100);
-		h1.setEmptyMarkerScheme('N');
+		h1.setEmptyMarkerScheme('R');
 		h1.setCollisionHandling('D');
 		h1.setRehashFactor("1.3");
 		h1.setRehashThreshold(0.4);
 
 		h1.put("i", "i");
+		h1.put("dex", "dex");
+		h1.put("dex", "dex");
 		h1.put("dex", "dex");
 		h1.put("a", "a");
 		h1.put("e", "e");
@@ -38,9 +40,10 @@ public class Driver {
 		System.out.println(h1.size());
 
 		System.out.println();
-		System.out.println(h1.get("stew"));
+		//System.out.println(h1.get("stew"));
 
-		h1.remove("zzenn");
+		h1.remove("dex");
+		h1.remove("dex");
 
 		System.out.println();
 
@@ -50,7 +53,7 @@ public class Driver {
 
 
 		h1.printHastableStatistic();
-		 */
+		 
 
 		/*
 		HashMap ha = new HashMap(100);
@@ -71,6 +74,7 @@ public class Driver {
 		// 2nd text file
 		//1st case , N, D, resize = 1.2, loadFactor = 0.5
 
+		/*
 		deliverableC('A','Q',"1.2",0.5, "hash_test_file2.txt" ); //this works
 
 		deliverableC('A','D',"1.3",0.75, "hash_test_file1.txt" ); //this works
@@ -95,7 +99,7 @@ public class Driver {
 		deliverableC('R','Q',"1.3",0.75, "hash_test_file1.txt" );
 
 		deliverableC('R','Q',"1.2",0.5, "hash_test_file2.txt" );
-
+	*/
 	}
 
 
