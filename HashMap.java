@@ -151,7 +151,11 @@ public class HashMap {
 			numOfCollisionCtr = 0; 
 
 			for(HashEntry h : hashTable){ //rehashing everything into the newly created array
-				if(h != null){
+				//if the cell contains an "empty" cell, there is no need to copy it
+				if(h == null || h.getKey().equals("_AVAILABLE_") || (h.getKey().charAt(0)) == '-' && h.getKey().charAt(1) == ' '){ 
+					continue;
+				}					
+				else{
 					h.resetCollisionNumber(); //different table means different amount of collisions for each entry
 					int quadCtr = 0;
 					int hashVal = hashMe(h.getValue()); //get the hash value for each entry in the current hash Table
@@ -161,16 +165,14 @@ public class HashMap {
 						
 						//If there is do the following, CHECK WHICH COLLISION HANDLER WAS CHOSEN
 						if (collisionHandlingType == 'D')
-							hashVal = (hashVal + hashSec(h.getValue())) % capacity; 
+							hashVal = (hashVal + hashSec(h.getKey())) % capacity; 
 						else if (collisionHandlingType == 'Q'){
 							quadCtr++;
 							hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;
 						}
 						//The above will get the correct hash value which will be used to place the entry in the temporary hash table
 					}
-
 					tempTable[hashVal] = h; //associate the entry in the hashTable to the correct index in the temporary Hash Table
-
 				}
 			}
 			hashTable = tempTable; //let the current hash table point to the temporary table, resize is complete
