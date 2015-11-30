@@ -7,10 +7,9 @@ public class Driver {
 	
 	public static void main(String [] args){
 		
+		/*
 		PrintWriter outFile = null;
-		
 
-		
 		// 1st text file
 		//1st case , N, Q, resize = 1.3, loadFactor = 0.75
 		deliverableC('A','Q',"1.3",0.75, "hash_test_file1.txt" ); //this works
@@ -41,6 +40,55 @@ public class Driver {
 		deliverableC('R','Q',"1.3",0.75, "hash_test_file1.txt" );
 
 		deliverableC('R','Q',"1.2",0.5, "hash_test_file2.txt" );
+		*/
+		
+		// smaller cases
+		// case 13----------------------------
+		System.out.println("=================================");
+		System.out.println("CASE 13");
+		HashMap h13 = new HashMap(50);
+		h13.setEmptyMarkerScheme('N');
+		h13.setCollisionHandling('D');
+		h13.setRehashFactor("2");
+		h13.setRehashThreshold(0.3);
+		
+		
+		for (int i=0; i < 300; i++)				//put 300
+			h13.put("case13", "case13");
+		
+		for (int i=0; i < 50; i++)	
+			System.out.println(h13.get("case13"));
+			
+		for(int i=0; i < 100; i++)				//remove 100
+			h13.remove("case13");
+		
+		
+		h13.printHastableStatistic();
+		//-----------------------------------
+		
+		
+		// smaller cases
+		// case 14----------------------------
+		System.out.println("=================================");
+		System.out.println("CASE 14");
+		HashMap h14 = new HashMap(150);
+		h14.setEmptyMarkerScheme('N');
+		h14.setCollisionHandling('Q');
+		h14.setRehashFactor("1.6");
+		h14.setRehashThreshold(0.8);
+
+		for (int i=0; i < 100; i++)
+			h14.put("case14", "case14");;
+		
+		for(int i=0; i < 100; i++)			//removing all values in the table
+			h14.remove("case14");
+		
+		System.out.println( "Getting after everything removed :" + h14.get("case14"));
+
+		
+		h14.printHastableStatistic();
+		//-----------------------------------
+		
 
 	}
 
@@ -89,7 +137,6 @@ public class Driver {
 		}
 
 		inFile.close();
-		
 	}
 	
 	
