@@ -145,14 +145,7 @@ public class HashMap {
 
 			//############# collision happened, take note ###########
 			lastCollidedValue = hashVal;
-			
-			
-			//########################################
-			//if (hashTable[hashVal].lastCollidedHashValue == -1)
-				hashTable[hashVal].lastCollidedHashValue = hashVal;
-				
-			//#######################################
-			
+
 			
 			if (collisionHandlingType == 'D')
 				hashVal = (hashVal + hashSec(k)) % capacity; 
