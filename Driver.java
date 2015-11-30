@@ -6,8 +6,8 @@ public class Driver {
 
 	public static void main(String [] args){
 
-
-		
+		Scanner kb = new Scanner(System.in);
+		/*
 		HashMap h1 = new HashMap(100);
 		h1.setEmptyMarkerScheme('R');
 		h1.setCollisionHandling('D');
@@ -53,7 +53,7 @@ public class Driver {
 
 
 		h1.printHastableStatistic();
-		 
+		 */
 
 		/*
 		HashMap ha = new HashMap(100);
@@ -100,6 +100,44 @@ public class Driver {
 
 		deliverableC('R','Q',"1.2",0.5, "hash_test_file2.txt" );
 	*/
+		
+		
+		//deliverableC('R','Q',"1.2",0.5, "hash_test_file1.txt" ); //this works
+		
+		HashMap h1 = new HashMap(100);
+		h1.setEmptyMarkerScheme('R');
+		h1.setCollisionHandling('Q');
+		h1.setRehashFactor("1.3");
+		h1.setRehashThreshold(0.7);
+
+		readFile(h1, "hash_test_file1.txt", 200000 );
+		
+		h1.printHastableStatistic();
+		
+		System.out.println("PRESS ENTER...");
+		kb.nextLine();
+		
+		/*
+		int counter = 0;
+		for(HashEntry entry: h1.values()){
+			if(counter > 10000){
+				break;
+			}
+			if(entry == null){
+				continue;
+			}
+			h1.remove(entry.getKey());
+			counter++;
+		}
+		*/
+		
+		System.out.println(h1.get("intradermically"));
+		
+		h1.remove("intradermically");
+		
+		h1.get("intradermically");
+		
+		h1.printHastableStatistic();	
 	}
 
 
@@ -109,7 +147,6 @@ public class Driver {
 		h.setCollisionHandling(c);
 		h.setRehashFactor(rf);
 		h.setRehashThreshold(rt);	
-
 	}
 
 
