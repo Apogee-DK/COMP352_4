@@ -47,7 +47,10 @@ public class HashMap {
 	public String get(String k) {
 		int hashVal = getHash(k);
 
+		if (hashVal != -1 )
 		return hashTable[hashVal].toString();
+		else
+			return null;
 	}
 	
 	public int getHash(String k){
@@ -145,7 +148,7 @@ public class HashMap {
 			
 			
 			//########################################
-			if (hashTable[hashVal].lastCollidedHashValue == -1)
+			//if (hashTable[hashVal].lastCollidedHashValue == -1)
 				hashTable[hashVal].lastCollidedHashValue = hashVal;
 				
 			//#######################################
