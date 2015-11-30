@@ -118,7 +118,6 @@ public class HashMap {
 						else if (collisionHandlingType == 'Q'){
 							quadCtr++;
 							hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;
-
 						}
 					}
 
@@ -141,8 +140,15 @@ public class HashMap {
 
 			//*************************************************************************
 
-			//############# collision happened, take note
+			//############# collision happened, take note ###########
 			lastCollidedValue = hashVal;
+			
+			
+			//########################################
+			if (hashTable[hashVal].lastCollidedHashValue == -1)
+				hashTable[hashVal].lastCollidedHashValue = hashVal;
+				
+			//#######################################
 			
 			
 			if (collisionHandlingType == 'D')
@@ -150,7 +156,6 @@ public class HashMap {
 			else if (collisionHandlingType == 'Q'){
 				quadCtr++;
 				hashVal = (hashVal + ((int)Math.pow(quadCtr, 2)))%capacity;
-
 			}		
 		}
 
@@ -181,15 +186,26 @@ public class HashMap {
 
 				
 				//##########################################################
-				hashTable [hashValToBeRemoved]  = hashTable[lastCollidedValue];
+				//hashTable [hashValToBeRemoved]  = hashTable[lastCollidedValue];
 				
-				hashTable[lastCollidedValue] = null;
+				//hashTable[hashValToBeRemoved] = new HashEntry(hashTable[lastCollidedValue].getKey(), hashTable[lastCollidedValue].getValue());
+				
+				System.out.println("LCD: " + lastCollidedValue);
+				
+				if (lastCollidedValue != -1)
+				{
+					System.out.println(hashTable[lastCollidedValue].getKey() + " " + hashTable[lastCollidedValue].getValue());
+					hashTable[hashValToBeRemoved] = new HashEntry(hashTable[lastCollidedValue].getKey(), hashTable[lastCollidedValue].getValue());
+					hashTable[lastCollidedValue] = null;
+					lastCollidedValue = -1;
+				}
+				else
+					hashTable[hashValToBeRemoved] = null;
+				//hashTable[lastCollidedValue] = hashTable[hashValToBeRemoved].lastCollidedHashValue;
 				
 				//############ rehash after remove ###############
 
 				// get the next hash (Q or D) from this current hash, then 
-
-				
 
 				
 				
@@ -222,18 +238,6 @@ public class HashMap {
 			}
 			numOfElements--;
 		}
-	}
-	
-	
-	public void replaceCurrentHash(int hashVal){
-		
-		hashTable [hashVal]  = hashTable[lastCollidedValue];
-		
-		hashTable[lastCollidedValue] = null;
-		
-		
-		
-		
 	}
 
 	//RETURN AN ITERABLE COLLECTION OF HASH ENTRIES FROM THE TABLE
