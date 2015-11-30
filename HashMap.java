@@ -233,7 +233,7 @@ public class HashMap {
 			}
 			else if(emptyMarkerScheme =='R'){
 
-				replaceCurrentHash(hashValToBeRemoved);
+				replaceCurrentHash(hashValToBeRemoved); //call the Replace scheme recursion!
 
 			}
 			numOfElements--;
@@ -254,7 +254,7 @@ public class HashMap {
 
 			hashTable[hashVal] = hashTable[hashTable[hashVal].getLastHashCollisionValue()]; //swap the last collision entry with the current entry
 
-			replaceCurrentHash(hashTable[hashVal].getLastHashCollisionValue());
+			replaceCurrentHash(hashTable[hashVal].getLastHashCollisionValue()); //call the method again but for the swapped entry position!
 			
 			hashTable[hashVal].setLastHashCollisionValue(hashTable[hashVal].getPrevHashCollisionValue()); //set the last collision attribute of the swapped entry as its previous collision entry
 
