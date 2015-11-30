@@ -109,9 +109,9 @@ public class Driver {
 		//*******************************************************
 
 		
-		deliverableC('A','Q',"1.5",0.75, "hash_test_file1.txt" ); 
+		//deliverableC('A','Q',"1.5",0.75, "hash_test_file1.txt" ); 
 		
-		deliverableC('A','Q',"1.2",0.75, "hash_test_file1.txt" ); 
+		//deliverableC('A','Q',"1.2",0.75, "hash_test_file1.txt" ); 
 
 		//*******************************************************
 		//2ND TEST (2nd file) - DIFFERENT LOAD FACTORS
@@ -122,9 +122,9 @@ public class Driver {
 		//loadFactor = 0.75 & 0.5
 		//*******************************************************
 		
-		deliverableC('A','Q',"1.3",0.75, "hash_test_file2.txt"); 
+		//deliverableC('A','Q',"1.3",0.75, "hash_test_file2.txt"); 
 		
-		deliverableC('A','Q',"1.3",0.5, "hash_test_file2.txt"); 
+		//deliverableC('A','Q',"1.3",0.5, "hash_test_file2.txt"); 
 		
 		//*******************************************************
 		//3RD TEST 	          - DIFFERENT MARKER SCHEME
@@ -136,9 +136,9 @@ public class Driver {
 		//loadFactor = 0.75 & 0.5
 		//*******************************************************
 
-		deliverableC('A','D',"1.3",0.75, "hash_test_file1.txt" ); 
+		//deliverableC('A','D',"1.3",0.75, "hash_test_file1.txt" ); 
 
-		deliverableC('A','D',"1.3",0.5, "hash_test_file1.txt" ); 
+		//deliverableC('A','D',"1.3",0.5, "hash_test_file1.txt" ); 
 
 		//*******************************************************
 		//4TH TEST 			  - DIFFERENT MARKER SCHEME
@@ -150,9 +150,9 @@ public class Driver {
 		//*******************************************************
 		
 		
-		deliverableC('N','D',"1.3",0.6, "hash_test_file2.txt" ); 
+		//deliverableC('N','D',"1.3",0.6, "hash_test_file2.txt" ); 
 
-		deliverableC('N','D',"1.1",0.4, "hash_test_file2.txt" ); 
+		//deliverableC('N','D',"1.1",0.4, "hash_test_file2.txt" ); 
 		
 		//*******************************************************
 		//5TH TEST 			  - DIFFERENT HANDLING
@@ -163,9 +163,9 @@ public class Driver {
 		//loadFactor = 0.6 & 0.4
 		//*******************************************************
 
-		deliverableC('N','Q',"1.3",0.6, "hash_test_file1.txt" ); 
+		//deliverableC('N','Q',"1.3",0.6, "hash_test_file1.txt" ); 
 
-		deliverableC('N','Q',"1.1",0.4, "hash_test_file1.txt" );
+		//deliverableC('N','Q',"1.1",0.4, "hash_test_file1.txt" );
 
 
 		//*******************************************************
