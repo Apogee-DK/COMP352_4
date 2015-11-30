@@ -6,15 +6,17 @@ public class Driver {
 
 	public static void main(String [] args){
 
-
+		Scanner kb = new Scanner(System.in);
 		/*
 		HashMap h1 = new HashMap(100);
-		h1.setEmptyMarkerScheme('N');
+		h1.setEmptyMarkerScheme('R');
 		h1.setCollisionHandling('D');
 		h1.setRehashFactor("1.3");
 		h1.setRehashThreshold(0.4);
 
 		h1.put("i", "i");
+		h1.put("dex", "dex");
+		h1.put("dex", "dex");
 		h1.put("dex", "dex");
 		h1.put("a", "a");
 		h1.put("e", "e");
@@ -38,9 +40,10 @@ public class Driver {
 		System.out.println(h1.size());
 
 		System.out.println();
-		System.out.println(h1.get("stew"));
+		//System.out.println(h1.get("stew"));
 
-		h1.remove("zzenn");
+		h1.remove("dex");
+		h1.remove("dex");
 
 		System.out.println();
 
@@ -71,6 +74,7 @@ public class Driver {
 		// 2nd text file
 		//1st case , N, D, resize = 1.2, loadFactor = 0.5
 
+		/*
 		deliverableC('A','Q',"1.2",0.5, "hash_test_file2.txt" ); //this works
 
 		deliverableC('A','D',"1.3",0.75, "hash_test_file1.txt" ); //this works
@@ -95,7 +99,45 @@ public class Driver {
 		deliverableC('R','Q',"1.3",0.75, "hash_test_file1.txt" );
 
 		deliverableC('R','Q',"1.2",0.5, "hash_test_file2.txt" );
+	*/
+		
+		
+		//deliverableC('R','Q',"1.2",0.5, "hash_test_file1.txt" ); //this works
+		
+		HashMap h1 = new HashMap(100);
+		h1.setEmptyMarkerScheme('R');
+		h1.setCollisionHandling('Q');
+		h1.setRehashFactor("1.3");
+		h1.setRehashThreshold(0.7);
 
+		readFile(h1, "hash_test_file1.txt", 200000 );
+		
+		h1.printHastableStatistic();
+		
+		System.out.println("PRESS ENTER...");
+		kb.nextLine();
+		
+		/*
+		int counter = 0;
+		for(HashEntry entry: h1.values()){
+			if(counter > 10000){
+				break;
+			}
+			if(entry == null){
+				continue;
+			}
+			h1.remove(entry.getKey());
+			counter++;
+		}
+		*/
+		
+		System.out.println(h1.get("intradermically"));
+		
+		h1.remove("intradermically");
+		
+		h1.get("intradermically");
+		
+		h1.printHastableStatistic();	
 	}
 
 
@@ -105,7 +147,6 @@ public class Driver {
 		h.setCollisionHandling(c);
 		h.setRehashFactor(rf);
 		h.setRehashThreshold(rt);	
-
 	}
 
 

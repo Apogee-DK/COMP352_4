@@ -5,11 +5,13 @@ public class HashEntry extends Available{
 	private String value;
 	private int collisionNumber;
 	
+	int lastCollidedHashValue = -1;
+	 int prevCollidedHashValue = -1 ;
+	
 	HashEntry(String k, String v) {
 		
 		key = k;
 		value = v;
-
 	}
 
 	HashEntry(Available av, String k){
