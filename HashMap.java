@@ -233,7 +233,7 @@ public class HashMap {
 			}
 			else if(emptyMarkerScheme =='R'){
 
-				replaceCurrentHash(hashValToBeRemoved);
+				replaceCurrentHash(hashValToBeRemoved); //call the Replace scheme recursion!
 
 			}
 			numOfElements--;
@@ -245,16 +245,16 @@ public class HashMap {
 	private void replaceCurrentHash(int hashVal){
 
 		//if the last collision value is null, -1 or if the lastHashCollisionValue is equal to its current hash value then do not do anything
-		//if(hashVal == -1 || hashTable[hashVal] == null || hashTable[hashVal].getLastHashCollisionValue() == hashTable[hashVal].getHashValue()){
-		//	return;
-		//}
+		if(hashVal == -1 || hashTable[hashVal] == null || hashTable[hashVal].getLastHashCollisionValue() == hashTable[hashVal].getHashValue()){
+			return;
+		}
 		
 		//Check if the last collision value is not -1 and not null
 		 if (hashTable[hashVal].getLastHashCollisionValue() != -1 && hashTable[hashTable[hashVal].getLastHashCollisionValue()] != null){
 
 			hashTable[hashVal] = hashTable[hashTable[hashVal].getLastHashCollisionValue()]; //swap the last collision entry with the current entry
 
-			//replaceCurrentHash(hashTable[hashVal].getLastHashCollisionValue());
+			replaceCurrentHash(hashTable[hashVal].getLastHashCollisionValue()); //call the method again but for the swapped entry position!
 			
 			hashTable[hashVal].setLastHashCollisionValue(hashTable[hashVal].getPrevHashCollisionValue()); //set the last collision attribute of the swapped entry as its previous collision entry
 
