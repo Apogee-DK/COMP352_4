@@ -44,13 +44,19 @@ public class HashMap {
 
 
 	//GETTING THE VALUE FROM A SPECIFIC KEY	
-	public int get(String k) {
+	public String get(String k) {
+		int hashVal = getHash(k);
+
+		return hashTable[hashVal].toString();
+	}
+	
+	public int getHash(String k){
 		int hashVal = hashMe(k);
 
 		int quadCtr=0;
 
 		while(hashTable[hashVal] != null && !hashTable[hashVal].getValue().equals(k)){
-
+			
 			if (collisionHandlingType == 'D')
 				hashVal = (hashVal + hashSec(k))%capacity; 
 			else if (collisionHandlingType == 'Q'){
@@ -65,6 +71,8 @@ public class HashMap {
 
 		return hashVal;
 	}
+	
+	
 
 	//ADDING VALUES INTO THE TABLE
 	public void put(String k, String v) {
@@ -154,10 +162,10 @@ public class HashMap {
 	//REMOVE A CERTAIN STRING BY USING THE KEY
 	public void remove(String k){
 
-		int quadCtr=0;
+		//int quadCtr=0;
 
 		System.out.println("Trying to remove " + k + ". Searching for it in the Hash Table...");
-		int hashValToBeRemoved = get(k);
+		int hashValToBeRemoved = getHash(k);
 		if (hashValToBeRemoved == -1){
 			System.out.println(k + " was not found in the Table.");
 		}
@@ -166,16 +174,16 @@ public class HashMap {
 				hashTable[hashValToBeRemoved]	= new DeletedEntry(new Available(), k);
 			}
 			else if(emptyMarkerScheme == 'N'){
-				hashTable[hashValToBeRemoved]	= new DeletedEntry("- " + k);
+				hashTable[hashValToBeRemoved]	= new DeletedEntry("- " + k, k);
 			}
 			else if(emptyMarkerScheme =='R'){
 				//int tempHashVal = hashValToBeRemoved;	// this will jump through the array looking for next entry with same hash
 
 				
 				//##########################################################
-				hashTable [hashValToBeRemoved]  = hashTable[lastCollidedValue ];
+				hashTable [hashValToBeRemoved]  = hashTable[lastCollidedValue];
 				
-				hashTable[lastCollidedValue ] = null;
+				hashTable[lastCollidedValue] = null;
 				
 				//############ rehash after remove ###############
 
@@ -242,7 +250,7 @@ public class HashMap {
 		//############# HASH CODE MAP ##############
 		// converts strings to integers
 
-		if(k.charAt(0)=='-'){
+		if(k.charAt(0)=='-' && k.charAt(1)==' '){
 			k = k.substring(2);
 		}
 		
@@ -278,7 +286,7 @@ public class HashMap {
 	//DOUBLE HASHING FUNCTION
 	public int hashSec(String k) {
 
-		if(k.charAt(0)=='-'){
+		if(k.charAt(0)=='-' && k.charAt(1)==' '){
 			k = k.substring(2);
 		}
 		
