@@ -223,6 +223,18 @@ public class HashMap {
 			numOfElements--;
 		}
 	}
+	
+	
+	public void replaceCurrentHash(int hashVal){
+		
+		hashTable [hashVal]  = hashTable[lastCollidedValue];
+		
+		hashTable[lastCollidedValue] = null;
+		
+		
+		
+		
+	}
 
 	//RETURN AN ITERABLE COLLECTION OF HASH ENTRIES FROM THE TABLE
 	public HashEntry[] values(){
