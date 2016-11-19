@@ -1,11 +1,4 @@
-Lenmor and Dexter
-
-/*NAMES:
-
-LENMOR DIMANALATA 27699727
-DEXTER KWOK 27709110
-*COMP 352 - ASSIGNMENT 4
-Class HashMap
+# COMP 352 - ASSIGNMENT 4
 Objective:
 - Create a hash table which will accept entries consisting of a key and a value
 - Use the key to partition the corresponding entries into its table
